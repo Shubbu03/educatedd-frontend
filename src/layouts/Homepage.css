@@ -1,0 +1,128 @@
+/* .Header-main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ccc;
+  }
+  
+  
+  .Div-main {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    text-decoration: none;
+    
+  }
+
+
+  
+.button-list {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+
+.button-list-item {
+  margin: 0 10px;
+}
+
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+.button-primary {
+  background-color: #3498db;
+  color: #fff;
+}
+
+.button-primary:hover {
+  background-color: #2980b9;
+}
+
+
+.button-secondary {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.button-secondary:hover {
+  background-color: #c0392b;
+}
+
+   */
+
+   /* Header Styles */
+.Header-main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ccc;
+  }
+  
+  /* Main Division Styles */
+  .Div-main {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    text-decoration: none;
+    /* color: #333; */
+  }
+  
+  /* Button List Styles */
+  .button-list {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+  }
+  
+  /* Button List Item Styles */
+  .button-list-item {
+    margin: 0 10px;
+  }
+  
+  /* Common Button Styles */
+  .button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Primary Button Styles */
+  .button-primary {
+    background-color: #3498db;
+    color: #fff;
+  }
+  
+  .button-primary:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Secondary Button Styles */
+  .button-secondary {
+    background-color: #e74c3c;
+    color: #fff;
+  }
+  
+  .button-secondary:hover {
+    background-color: #c0392b;
+  }
+  
