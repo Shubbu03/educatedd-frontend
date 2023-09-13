@@ -21,7 +21,7 @@ import {
 // Custom components
 // import { HSeparator } from "components/separator/Separator";
 import DefaultAuth from "layouts/auth/Default";
-import Menu from "./Menu";
+// import Menu from "./Menu";
 // Assets
 import illustration from "assets/img/auth/illustration.jpg";
 // import { FcGoogle } from "react-icons/fc";
