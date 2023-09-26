@@ -1,12 +1,16 @@
 import { ChangeEvent, useState } from 'react';
 
-type Props = {
-    handleSubmit : () => void
-}
-function Uploader({handleSubmit}:Props) {
+// type Props = {
+//     handleSubmit : () => void
+// }
+//{handleSubmit}:Props
+function Uploader() {
   const [fileList, setFileList] = useState<FileList | null>(null);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+
+    //call /courses/upload from here!!!!
+    
     setFileList(e.target.files);
   };
 
@@ -37,7 +41,7 @@ function Uploader({handleSubmit}:Props) {
 
   return (
     <div>
-      <input type="file" onChange={handleSubmit} multiple />
+      <input type="file" onChange={handleFileChange} multiple />
 
       <ul>
         {files.map((file, i) => (

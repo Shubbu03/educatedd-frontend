@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import Uploader from "./Uploader";
 import Keywords from "./Keywords";
+import axios from "axios";
 
 type Props = {
   isOpen: boolean;
@@ -30,11 +31,42 @@ function CourseModal({ isOpen, onOpen, onClose }: Props) {
   const initialRef = useRef(null);
   //   const finalRef = React.useRef(null)
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     // console.log(
     //   `Course name is: ${courseValues.name} & desc is: ${courseValues.desc}`
     // );
+
+    //call /courses/POST from here!!
+    const accessToken = localStorage.getItem("accessToken");
+
+   await axios
+      .post(
+        // `http://localhost:3005/courses/`,
+        `http://localhost:3005/courses?Title=${courseValues.name}&Description=${courseValues.desc}&pdfDetails=cyukt`,
+        {
+          // data: {
+          //   Title: courseValues.name,
+          //   Description: courseValues.desc,
+          //   pdfDetails: "cyukt",
+          // },
+          headers: {
+            "accept": "application/json",
+            "x-api-token": `${accessToken}`,
+          },
+          data: {
+            // Title: courseValues.name,
+            // Description: courseValues.desc,
+            // pdfDetails: "cyukt",
+          },
+        }
+      )
+      .then((res) => {
+        console.log("the posted course is:", res);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
     uploadFile();
     onClose();
@@ -80,13 +112,14 @@ function CourseModal({ isOpen, onOpen, onClose }: Props) {
 
             <FormControl mt={4}>
               <FormLabel>Upload Files</FormLabel>
-              <Uploader handleSubmit={uploadFile} />
+              {/* <Uploader handleSubmit={uploadFile} /> */}
+              <Uploader />
             </FormControl>
 
-            <FormControl mt={4}>
+            {/* <FormControl mt={4}>
               <FormLabel>Keywords</FormLabel>
               <Keywords />
-            </FormControl>
+            </FormControl> */}
           </ModalBody>
 
           <ModalFooter>

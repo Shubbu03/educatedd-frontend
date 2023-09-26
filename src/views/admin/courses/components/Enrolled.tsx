@@ -7,33 +7,51 @@ import {
   Button,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { createColumnHelper } from "@tanstack/react-table";
-import React, { useState } from "react";
-import { MdCheckCircle, MdOutlineError, MdAdd, MdEdit, MdDelete } from "react-icons/md";
+import {
+  createColumnHelper,
+  // PaginationState,
+  // getFilteredRowModel,
+  // getPaginationRowModel,
+  // ColumnDef,
+  // OnChangeFn,
+} from "@tanstack/react-table";
+import React, { useEffect, useState } from "react";
+import {
+  MdCheckCircle,
+  MdOutlineError,
+  MdAdd,
+  MdEdit,
+  MdDelete,
+} from "react-icons/md";
 import ComplexTable from "views/admin/dataTables/components/ComplexTable";
 import CourseModal from "./CourseModal";
-import tableDataComplex from "views/admin/dataTables/variables/tableDataComplex";
 import DeleteConfirmModal from "./DeleteConfirmModal";
+import axios from "axios";
 
 type RowObj = {
-  name: string;
-  status: string;
+  title: string;
+  description: string;
   date: string;
-  progress: number;
+  buttons: string;
 };
 
 const columnHelper = createColumnHelper<RowObj>();
 
 function Enrolled() {
+
+  // const rerender = React.useReducer(() => ({}), {})[1]
+
   const textColor = useColorModeValue("secondaryGray.900", "white");
 
   const [isOpen, setIsOpen] = useState(false);
 
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
+  const [rows, setRows] = useState([]);
+
   const columns = [
-    columnHelper.accessor("name", {
-      id: "name",
+    columnHelper.accessor("title", {
+      id: "title",
       header: () => (
         <Text
           justifyContent="space-between"
@@ -41,7 +59,7 @@ function Enrolled() {
           fontSize={{ sm: "10px", lg: "12px" }}
           color="gray.400"
         >
-          NAME
+          TITLE
         </Text>
       ),
       cell: (info: any) => (
@@ -52,8 +70,8 @@ function Enrolled() {
         </Flex>
       ),
     }),
-    columnHelper.accessor("status", {
-      id: "status",
+    columnHelper.accessor("description", {
+      id: "description",
       header: () => (
         <Text
           justifyContent="space-between"
@@ -61,36 +79,18 @@ function Enrolled() {
           fontSize={{ sm: "10px", lg: "12px" }}
           color="gray.400"
         >
-          STATUS
+          DESCRIPTION
         </Text>
       ),
-      cell: (info) => (
+      cell: (info: any) => (
         <Flex align="center">
-          <Icon
-            w="24px"
-            h="24px"
-            me="5px"
-            color={
-              info.getValue() === "Published"
-                ? "green.500"
-                : info.getValue() === "Draft"
-                ? "orange.500"
-                : null
-            }
-            as={
-              info.getValue() === "Published"
-                ? MdCheckCircle
-                : info.getValue() === "Draft"
-                ? MdOutlineError
-                : null
-            }
-          />
           <Text color={textColor} fontSize="sm" fontWeight="700">
             {info.getValue()}
           </Text>
         </Flex>
       ),
     }),
+
     columnHelper.accessor("date", {
       id: "date",
       header: () => (
@@ -104,37 +104,16 @@ function Enrolled() {
         </Text>
       ),
       cell: (info) => (
-        <Text color={textColor} fontSize="sm" fontWeight="700">
-          {info.getValue()}
-        </Text>
+        <>
+          <Text color={textColor} fontSize="sm" fontWeight="700">
+            {info.getValue()}
+          </Text>
+        </>
       ),
     }),
-    columnHelper.accessor("progress", {
-      id: "progress",
-      header: () => (
-        <Text
-          justifyContent="space-between"
-          align="center"
-          fontSize={{ sm: "10px", lg: "12px" }}
-          color="gray.400"
-        >
-          PROGRESS
-        </Text>
-      ),
-      cell: (info) => (
-        <Flex align="center">
-          <Progress
-            variant="table"
-            colorScheme="brandScheme"
-            h="8px"
-            w="108px"
-            value={info.getValue()}
-          />
-        </Flex>
-      ),
-    }),
-    columnHelper.accessor("progress", {
-      id: "progress",
+
+    columnHelper.accessor("buttons", {
+      id: "buttons",
       header: () => (
         <Text
           justifyContent="space-between"
@@ -163,12 +142,12 @@ function Enrolled() {
                 }}
               >
                 <Icon
-              transition="0.2s linear"
-              w="20px"
-              h="20px"
-              as={MdEdit}
-              color="brand.500"
-            />
+                  transition="0.2s linear"
+                  w="20px"
+                  h="20px"
+                  as={MdEdit}
+                  color="brand.500"
+                />
               </Button>
 
               <Button
@@ -187,12 +166,12 @@ function Enrolled() {
                 }}
               >
                 <Icon
-              transition="0.2s linear"
-              w="20px"
-              h="20px"
-              as={MdDelete}
-              color="brand.500"
-            />
+                  transition="0.2s linear"
+                  w="20px"
+                  h="20px"
+                  as={MdDelete}
+                  color="brand.500"
+                />
               </Button>
             </>
           }
@@ -224,27 +203,66 @@ function Enrolled() {
         </Flex>
       ),
     }),
-    
   ];
 
+  async function getUserCourses() {
+    const accessToken = localStorage.getItem("accessToken");
+    axios
+      .get("http://localhost:3005/courses", {
+        headers: {
+          "x-api-token": `${accessToken}`,
+        },
+      })
+      .then((res) => {
+        const value = res.data.data;
+
+        const mappedData = value.map((item: any) => {
+          const date = new Date(item.createdAt);
+          const readableDate = `${date.getDate()}/${
+            date.getMonth() + 1
+          }/${date.getFullYear()}`;
+
+          return {
+            title: item.title,
+            id:item.id,
+            description: item.description,
+            date: readableDate,
+          };
+        });
+        setRows(mappedData);
+        console.log("Retrieved courses are::", mappedData);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  useEffect(() => {
+    getUserCourses();
+  }, []);
+
   return (
-    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-      <ComplexTable
-        tableData={tableDataComplex}
-        columns={columns}
-        title={"Courses"}
-      />
-      <CourseModal
-        isOpen={isOpen}
-        onOpen={() => setIsOpen(true)}
-        onClose={() => setIsOpen(false)}
-      />
-      <DeleteConfirmModal
-         isOpen={isDeleteOpen}
-         onOpen={()=>setIsDeleteOpen(true)}
-         onClose={()=>setIsDeleteOpen(false)}
-         />
-    </Box>
+    <>
+      <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+        <ComplexTable tableData={rows} columns={columns} title={"Courses"} />
+
+        <CourseModal
+          isOpen={isOpen}
+          onOpen={() => setIsOpen(true)}
+          onClose={() => setIsOpen(false)}
+        />
+
+        <DeleteConfirmModal
+          isOpen={isDeleteOpen}
+          onOpen={() => setIsDeleteOpen(true)}
+          onClose={() => setIsDeleteOpen(false)}
+          // id={() => {
+          //   localStorage.setItem("id",rows[0].id)
+          // }}
+        />
+      </Box>
+      {console.log("rows are:", rows)}
+    </>
   );
 }
 
