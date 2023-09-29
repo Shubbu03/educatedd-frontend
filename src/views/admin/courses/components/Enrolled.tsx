@@ -27,18 +27,19 @@ import ComplexTable from "views/admin/dataTables/components/ComplexTable";
 import CourseModal from "./CourseModal";
 import DeleteConfirmModal from "./DeleteConfirmModal";
 import axios from "axios";
+import Loader from "components/loader/Loader";
 
 type RowObj = {
   title: string;
   description: string;
   date: string;
+  id: string;
   buttons: string;
 };
 
 const columnHelper = createColumnHelper<RowObj>();
 
 function Enrolled() {
-
   // const rerender = React.useReducer(() => ({}), {})[1]
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
@@ -48,6 +49,10 @@ function Enrolled() {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const [rows, setRows] = useState([]);
+
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  const [id, setID] = useState("");
 
   const columns = [
     columnHelper.accessor("title", {
@@ -161,8 +166,7 @@ function Enrolled() {
                 h="36px"
                 onClick={() => {
                   setIsDeleteOpen(true);
-                  // console.log("course delted")
-                  // <DeleteConfirmModal/>
+                  setID(info.row.original.id);
                 }}
               >
                 <Icon
@@ -207,7 +211,8 @@ function Enrolled() {
 
   async function getUserCourses() {
     const accessToken = localStorage.getItem("accessToken");
-    axios
+    setDataLoaded(true);
+    await axios
       .get("http://localhost:3005/courses", {
         headers: {
           "x-api-token": `${accessToken}`,
@@ -224,7 +229,7 @@ function Enrolled() {
 
           return {
             title: item.title,
-            id:item.id,
+            id: item.id,
             description: item.description,
             date: readableDate,
           };
@@ -234,18 +239,39 @@ function Enrolled() {
       })
       .catch((error) => {
         console.error(error);
-      });
+      })
+      .finally(() => setDataLoaded(false));
   }
+
+  const onConfirm = async () => {
+    const deleteId = id;
+    const accessToken = localStorage.getItem("accessToken");
+    await axios
+      .delete(`http://localhost:3005/courses/${deleteId}`, {
+        headers: {
+          accept: "application/json",
+          "x-api-token": `${accessToken}`,
+        },
+      })
+      .then((res) => {
+        console.log("the course is deleted:", res);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    setIsDeleteOpen(false);
+  };
 
   useEffect(() => {
     getUserCourses();
+    onConfirm();
   }, []);
 
   return (
     <>
       <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
         <ComplexTable tableData={rows} columns={columns} title={"Courses"} />
-
+        {dataLoaded && <Loader />}
         <CourseModal
           isOpen={isOpen}
           onOpen={() => setIsOpen(true)}
@@ -256,12 +282,9 @@ function Enrolled() {
           isOpen={isDeleteOpen}
           onOpen={() => setIsDeleteOpen(true)}
           onClose={() => setIsDeleteOpen(false)}
-          // id={() => {
-          //   localStorage.setItem("id",rows[0].id)
-          // }}
+          onConfirm={onConfirm}
         />
       </Box>
-      {console.log("rows are:", rows)}
     </>
   );
 }

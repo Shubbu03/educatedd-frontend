@@ -15,6 +15,7 @@ import {
 import Uploader from "./Uploader";
 import Keywords from "./Keywords";
 import axios from "axios";
+import Loader from "components/loader/Loader";
 
 type Props = {
   isOpen: boolean;
@@ -28,44 +29,35 @@ function CourseModal({ isOpen, onOpen, onClose }: Props) {
     desc: "",
   });
 
+  const [dataLoaded, setDataLoaded] = useState(false);
+
   const initialRef = useRef(null);
-  //   const finalRef = React.useRef(null)
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    // console.log(
-    //   `Course name is: ${courseValues.name} & desc is: ${courseValues.desc}`
-    // );
 
     //call /courses/POST from here!!
-    const accessToken = localStorage.getItem("accessToken");
-
-   await axios
+    const accessToken1 = localStorage.getItem("accessToken");
+    setDataLoaded(true);
+    await axios
       .post(
-        // `http://localhost:3005/courses/`,
         `http://localhost:3005/courses?Title=${courseValues.name}&Description=${courseValues.desc}&pdfDetails=cyukt`,
+        {},
         {
-          // data: {
-          //   Title: courseValues.name,
-          //   Description: courseValues.desc,
-          //   pdfDetails: "cyukt",
-          // },
           headers: {
-            "accept": "application/json",
-            "x-api-token": `${accessToken}`,
-          },
-          data: {
-            // Title: courseValues.name,
-            // Description: courseValues.desc,
-            // pdfDetails: "cyukt",
+            "x-api-token": `${accessToken1}`,
           },
         }
       )
       .then((res) => {
         console.log("the posted course is:", res);
+        // setDataLoaded(true);
       })
       .catch((error) => {
         console.error(error);
+      })
+      .finally(() => {
+        setDataLoaded(false);
       });
 
     uploadFile();
@@ -130,6 +122,7 @@ function CourseModal({ isOpen, onOpen, onClose }: Props) {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      {dataLoaded && <Loader />}
     </>
   );
 }

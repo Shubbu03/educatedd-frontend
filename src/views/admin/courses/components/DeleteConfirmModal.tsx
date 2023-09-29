@@ -15,32 +15,45 @@ type DeleteProps = {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
-  // id: () => void;
+  onConfirm: () => void;
 };
 
-function DeleteConfirmModal({ isOpen, onOpen, onClose }: DeleteProps) {
+function DeleteConfirmModal({ isOpen, onOpen, onClose,onConfirm }: DeleteProps) {
   const initialRef = React.useRef(null);
 
-  const deleteCourse = async () => {
-    // const data = res.data.data
-    // console.log("data from delete ::",data)
-    // const id =
-    const accessToken = localStorage.getItem("accessToken");
-    await axios.delete(`http://localhost:3005/courses/delete/29e375cb-7075-4bf8-9c6f-8e172eb1cb10`, {
-      headers: {
-        "accept": "application/json",
-        "x-api-token": `${accessToken}`,
-      },
-    })
-    .then((res) => {
-      console.log("the course is deleted:", res);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  // const deleteCourse = async () => {
+  //   // const data = res.data.data
+  //   // console.log("data from delete ::",data)
+  //   // const id =
+  //   const accessToken = localStorage.getItem("accessToken");
+  //   await axios.delete(`http://localhost:3005/courses/delete/`, {
+  //     headers: {
+  //       "accept": "application/json",
+  //       "x-api-token": `${accessToken}`,
+  //     },
+  //   },
+  //   // {
+  //   //   headers: {
+  //   //     // 'Access-Control-Allow-Origin':'http://localhost:3005/courses/',
+  //   //     // "accept": "application/json",
+  //   //     "x-api-token": `${accessToken1}`,
+  //   //   },
+  //   // }
+    
+  //   )
+  //   .then((res) => {
+  //     console.log("the course is deleted:", res);
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //   });
 
-    // console.log("Course Deleted Successfully");
-  };
+    
+
+  //   // console.log("Course Deleted Successfully");
+  // };
+
+  
 
   return (
     <>
@@ -56,7 +69,7 @@ function DeleteConfirmModal({ isOpen, onOpen, onClose }: DeleteProps) {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="red" mr={3} onClick={deleteCourse}>
+            <Button colorScheme="red" mr={3} onClick={onConfirm}>
               Delete
             </Button>
             <Button onClick={onClose}>Cancel</Button>
