@@ -9,7 +9,6 @@ import {
   ModalCloseButton,
   Button,
 } from "@chakra-ui/react";
-import axios from "axios";
 
 type DeleteProps = {
   isOpen: boolean;
@@ -18,42 +17,13 @@ type DeleteProps = {
   onConfirm: () => void;
 };
 
-function DeleteConfirmModal({ isOpen, onOpen, onClose,onConfirm }: DeleteProps) {
+function DeleteConfirmModal({
+  isOpen,
+  onOpen,
+  onClose,
+  onConfirm,
+}: DeleteProps) {
   const initialRef = React.useRef(null);
-
-  // const deleteCourse = async () => {
-  //   // const data = res.data.data
-  //   // console.log("data from delete ::",data)
-  //   // const id =
-  //   const accessToken = localStorage.getItem("accessToken");
-  //   await axios.delete(`http://localhost:3005/courses/delete/`, {
-  //     headers: {
-  //       "accept": "application/json",
-  //       "x-api-token": `${accessToken}`,
-  //     },
-  //   },
-  //   // {
-  //   //   headers: {
-  //   //     // 'Access-Control-Allow-Origin':'http://localhost:3005/courses/',
-  //   //     // "accept": "application/json",
-  //   //     "x-api-token": `${accessToken1}`,
-  //   //   },
-  //   // }
-    
-  //   )
-  //   .then((res) => {
-  //     console.log("the course is deleted:", res);
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //   });
-
-    
-
-  //   // console.log("Course Deleted Successfully");
-  // };
-
-  
 
   return (
     <>

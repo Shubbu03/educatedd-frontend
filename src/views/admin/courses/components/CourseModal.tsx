@@ -13,8 +13,9 @@ import {
   Input,
 } from "@chakra-ui/react";
 import Uploader from "./Uploader";
-import Keywords from "./Keywords";
+// import Keywords from "./Keywords";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 import Loader from "components/loader/Loader";
 
 type Props = {
@@ -32,6 +33,18 @@ function CourseModal({ isOpen, onOpen, onClose }: Props) {
   const [dataLoaded, setDataLoaded] = useState(false);
 
   const initialRef = useRef(null);
+
+  const courseAddedToast = () =>
+    toast.success("Course Added Successfully", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -58,6 +71,7 @@ function CourseModal({ isOpen, onOpen, onClose }: Props) {
       })
       .finally(() => {
         setDataLoaded(false);
+        courseAddedToast();
       });
 
     uploadFile();
@@ -123,6 +137,18 @@ function CourseModal({ isOpen, onOpen, onClose }: Props) {
         </ModalContent>
       </Modal>
       {dataLoaded && <Loader />}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 }

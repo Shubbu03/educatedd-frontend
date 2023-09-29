@@ -16,11 +16,11 @@ import {
   getSortedRowModel,
   SortingState,
   useReactTable,
-  PaginationState,
-  getFilteredRowModel,
+  // PaginationState,
+  // getFilteredRowModel,
   getPaginationRowModel,
-  ColumnDef,
-  OnChangeFn,
+  // ColumnDef,
+  // OnChangeFn,
 } from "@tanstack/react-table";
 // Custom components
 import Card from "components/card/Card";
@@ -33,7 +33,7 @@ export default function ComplexTable(props: {
   columns: any;
   title: string;
 }) {
-  const rerender = React.useReducer(() => ({}), {})[1];
+  // const rerender = React.useReducer(() => ({}), {})[1];
 
   const { tableData, columns, title } = props;
   const [sorting, setSorting] = React.useState<SortingState>([]);

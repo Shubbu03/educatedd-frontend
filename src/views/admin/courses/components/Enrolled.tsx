@@ -3,7 +3,6 @@ import {
   Text,
   Flex,
   Icon,
-  Progress,
   Button,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -16,13 +15,8 @@ import {
   // OnChangeFn,
 } from "@tanstack/react-table";
 import React, { useEffect, useState } from "react";
-import {
-  MdCheckCircle,
-  MdOutlineError,
-  MdAdd,
-  MdEdit,
-  MdDelete,
-} from "react-icons/md";
+import { ToastContainer, toast } from "react-toastify";
+import { MdAdd, MdEdit, MdDelete } from "react-icons/md";
 import ComplexTable from "views/admin/dataTables/components/ComplexTable";
 import CourseModal from "./CourseModal";
 import DeleteConfirmModal from "./DeleteConfirmModal";
@@ -209,6 +203,20 @@ function Enrolled() {
     }),
   ];
 
+  
+
+  const courseDeletedToast = () =>
+    toast.success("Course Deleted Successfully", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
   async function getUserCourses() {
     const accessToken = localStorage.getItem("accessToken");
     setDataLoaded(true);
@@ -246,7 +254,7 @@ function Enrolled() {
   const onConfirm = async () => {
     const deleteId = id;
     const accessToken = localStorage.getItem("accessToken");
-    await axios
+     await axios
       .delete(`http://localhost:3005/courses/${deleteId}`, {
         headers: {
           accept: "application/json",
@@ -255,16 +263,27 @@ function Enrolled() {
       })
       .then((res) => {
         console.log("the course is deleted:", res);
+
+        // if(res.data.data.code === 200){
+        //   courseDeletedToast()
+        // }
       })
       .catch((error) => {
         console.error(error);
-      });
+      })
+      .finally(
+        courseDeletedToast
+      )
     setIsDeleteOpen(false);
+      
+    
+    
+
+    getUserCourses();
   };
 
   useEffect(() => {
     getUserCourses();
-    onConfirm();
   }, []);
 
   return (
@@ -275,9 +294,8 @@ function Enrolled() {
         <CourseModal
           isOpen={isOpen}
           onOpen={() => setIsOpen(true)}
-          onClose={() => setIsOpen(false)}
+          onClose={() => {setIsOpen(false);getUserCourses()}}
         />
-
         <DeleteConfirmModal
           isOpen={isDeleteOpen}
           onOpen={() => setIsDeleteOpen(true)}
@@ -285,6 +303,18 @@ function Enrolled() {
           onConfirm={onConfirm}
         />
       </Box>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 }

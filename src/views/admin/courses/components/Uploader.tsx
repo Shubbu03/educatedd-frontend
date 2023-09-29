@@ -1,4 +1,5 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState } from "react";
+import axios from "axios";
 
 // type Props = {
 //     handleSubmit : () => void
@@ -8,35 +9,57 @@ function Uploader() {
   const [fileList, setFileList] = useState<FileList | null>(null);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-
-    //call /courses/upload from here!!!!
-    
     setFileList(e.target.files);
   };
 
-  const handleUploadClick = () => {
+  function extractFileNameWithoutExtension(filename: string) {
+    const lastIndex = filename.lastIndexOf(".");
+
+    if (lastIndex !== -1) {
+      return filename.substring(0, lastIndex);
+    } else {
+      return filename;
+    }
+  }
+
+  const handleUploadClick = async () => {
     if (!fileList) {
       return;
     }
-
 
     const data = new FormData();
     files.forEach((file, i) => {
       data.append(`file-${i}`, file, file.name);
     });
 
+    //call /courses/upload from here!!!!
 
-    // fetch('https://httpbin.org/post', {
-    //   method: 'POST',
-    //   body: data,
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => console.log(data))
-    //   .catch((err) => console.error(err));
+    const accessToken = localStorage.getItem("accessToken");
 
+    const fileName = extractFileNameWithoutExtension(files[0].name);
+
+    await axios
+      .post(
+        `http://localhost:3005/courses/upload?file=${fileName}`,
+        {
+          originalname: files[0].name,
+        },
+        {
+          headers: {
+            "x-api-token": `${accessToken}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then((res) => {
+        console.log("the uploaded file is:", res);
+        // setDataLoaded(true);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
-  // 👇 files is not an array, but it's iterable, spread to get an array of files
   const files = fileList ? [...fileList] : [];
 
   return (
@@ -45,9 +68,12 @@ function Uploader() {
 
       <ul>
         {files.map((file, i) => (
-          <li key={i}>
-            {file.name} - {file.type}
-          </li>
+          <>
+            <li key={i}>
+              {file.name} - {file.type}
+            </li>
+            {/* {console.log("file name is::",file.name)} */}
+          </>
         ))}
       </ul>
 
