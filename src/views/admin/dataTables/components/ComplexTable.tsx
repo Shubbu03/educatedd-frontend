@@ -55,7 +55,7 @@ export default function ComplexTable(props: {
     getPaginationRowModel: getPaginationRowModel(),
     debugTable: true,
   });
-  console.log("data is::", data);
+  // console.log("data is::", data);
   React.useEffect(() => {
     setData(props.tableData);
   }, [props]);

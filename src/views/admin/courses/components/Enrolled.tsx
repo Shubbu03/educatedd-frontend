@@ -38,6 +38,14 @@ function Enrolled() {
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
 
+  // const [editValues, setEditValues] = useState({ title: "", description: "" });
+
+  const [propVal, setPropVal] = useState({
+    id: "",
+    title: "",
+    description: "",
+  });
+
   const [isOpen, setIsOpen] = useState(false);
 
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -138,6 +146,17 @@ function Enrolled() {
                 h="36px"
                 onClick={() => {
                   setIsOpen(true);
+                  // setID(info.row.original.id);
+                  // setEditValues({
+                  //   title: info.row.original.title,
+                  //   description: info.row.original.description,
+                  // });
+                  setPropVal({
+                    id: info.row.original.id,
+                    title: info.row.original.title,
+                    description: info.row.original.description,
+                  });
+                  // console.log("info from edit is::",info)
                 }}
               >
                 <Icon
@@ -203,8 +222,6 @@ function Enrolled() {
     }),
   ];
 
-  
-
   const courseDeletedToast = () =>
     toast.success("Course Deleted Successfully", {
       position: "top-right",
@@ -254,7 +271,7 @@ function Enrolled() {
   const onConfirm = async () => {
     const deleteId = id;
     const accessToken = localStorage.getItem("accessToken");
-     await axios
+    await axios
       .delete(`http://localhost:3005/courses/${deleteId}`, {
         headers: {
           accept: "application/json",
@@ -263,21 +280,12 @@ function Enrolled() {
       })
       .then((res) => {
         console.log("the course is deleted:", res);
-
-        // if(res.data.data.code === 200){
-        //   courseDeletedToast()
-        // }
       })
       .catch((error) => {
         console.error(error);
       })
-      .finally(
-        courseDeletedToast
-      )
+      .finally(courseDeletedToast);
     setIsDeleteOpen(false);
-      
-    
-    
 
     getUserCourses();
   };
@@ -294,7 +302,16 @@ function Enrolled() {
         <CourseModal
           isOpen={isOpen}
           onOpen={() => setIsOpen(true)}
-          onClose={() => {setIsOpen(false);getUserCourses()}}
+          onClose={() => {
+            setIsOpen(false);
+            getUserCourses();
+          }}
+          // edit Values={propVal.id,propVal.title,propVal.description}
+
+          id={propVal.id}
+          title={propVal.title}
+          description={propVal.description}
+          // editValues={id:propVal.id,propVal.title,propVal.description}
         />
         <DeleteConfirmModal
           isOpen={isDeleteOpen}
@@ -303,6 +320,7 @@ function Enrolled() {
           onConfirm={onConfirm}
         />
       </Box>
+      {console.log("props data is::", propVal)}
       <ToastContainer
         position="top-right"
         autoClose={5000}

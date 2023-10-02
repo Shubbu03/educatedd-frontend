@@ -28,9 +28,11 @@ function Uploader() {
     }
 
     const data = new FormData();
-    files.forEach((file, i) => {
-      data.append(`file-${i}`, file, file.name);
-    });
+
+    data.append(`file`, files[0], files[0].name);
+    // files.forEach((file, i) => {
+
+    // });
 
     //call /courses/upload from here!!!!
 
@@ -39,20 +41,16 @@ function Uploader() {
     const fileName = extractFileNameWithoutExtension(files[0].name);
 
     await axios
-      .post(
-        `http://localhost:3005/courses/upload?file=${fileName}`,
-        {
-          originalname: files[0].name,
+      .post(`http://localhost:3005/courses/upload?file=${fileName}`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "x-api-token": `${accessToken}`,
+          // originalname: fileName,
         },
-        {
-          headers: {
-            "x-api-token": `${accessToken}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
+      })
       .then((res) => {
-        console.log("the uploaded file is:", res);
+        console.log("the uploaded file is:", res.data.data);
+        localStorage.setItem("pdfDetails",res.data.data);
         // setDataLoaded(true);
       })
       .catch((error) => {
@@ -70,7 +68,8 @@ function Uploader() {
         {files.map((file, i) => (
           <>
             <li key={i}>
-              {file.name} - {file.type}
+              {/* {file.name} - {file.type} */}
+              {file.name}
             </li>
             {/* {console.log("file name is::",file.name)} */}
           </>
