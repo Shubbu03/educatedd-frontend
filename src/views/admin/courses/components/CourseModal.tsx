@@ -65,6 +65,18 @@ function CourseModal({
       theme: "light",
     });
 
+  const courseEditedToast = () =>
+    toast.success("Course Edited Successfully", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
   function extractFileNameWithoutExtension(filename: string) {
     const lastIndex = filename.lastIndexOf(".");
 
@@ -83,8 +95,7 @@ function CourseModal({
     setDataLoaded(true);
     const urlExt = localStorage.getItem("pdfDetails");
     const url = extractFileNameWithoutExtension(urlExt);
-    console.log("Received url is::", url);
-    // const url = "random222";
+
     await axios
       .post(
         `http://localhost:3005/courses?Title=${courseValues.name}&Description=${courseValues.desc}&pdfDetails=${url}`,
@@ -96,8 +107,7 @@ function CourseModal({
         }
       )
       .then((res) => {
-        console.log("the posted course is:", res);
-        // setDataLoaded(true);
+        console.log("the newly added course is:", res);
       })
       .catch((error) => {
         console.error(error);
@@ -110,34 +120,54 @@ function CourseModal({
     onClose();
   };
 
-  const editCourses = async () => {
+  const editCourses = async (e: any) => {
+    e.preventDefault();
+
     const editId = id;
     const accessToken = localStorage.getItem("accessToken");
 
-    console.log("edited title and desc are::", title, description);
+    console.log(
+      "edited title and desc are::",
+      courseValues.name,
+      courseValues.desc
+    );
 
-    // await axios.put(
-    //   `http://localhost:3005/courses/${editId}`,
-    //   {
-    //     data: {
-    //       title: `${title}`,
-    //       description: `${description}`,
-    //     },
-    //   },
-    //   {
-    //     headers: {
-    //       "x-api-token": `${accessToken}`,
-    //     },
-    //   }
-    // );
+    await axios
+      .put(
+        `http://localhost:3005/courses/${editId}`,
+        {
+          data: {
+            title: `${courseValues.name}`,
+            description: `${courseValues.desc}`,
+          },
+        },
+        {
+          headers: {
+            "x-api-token": `${accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log("the edited course is:", res);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => {
+        setDataLoaded(false);
+        courseEditedToast();
+      });
+
+    onClose();
   };
 
-  // useEffect(() => {
-  //   console.log("edited values aree::", editValues.id, editValues.title, editValues.description);
-  // }, [editValues.id, editValues.title, editValues.description]);
-
   useEffect(() => {
-    console.log("edited values are::", id, title, description);
+    // console.log("edited values are::", id, title, description);
+    console.log(
+      "edited title and desc are::",
+      courseValues.name,
+      courseValues.desc
+    );
     setCourseValues({ id: id, name: title, desc: description });
   }, [id, title, description]);
 
@@ -155,7 +185,7 @@ function CourseModal({
                 ref={initialRef}
                 value={courseValues.name}
                 onChange={(e) =>
-                  setCourseValues({ id: "", name: e.target.value, desc: "" })
+                  setCourseValues({ ...courseValues, name: e.target.value })
                 }
                 placeholder="Enter name"
               />
@@ -166,11 +196,7 @@ function CourseModal({
               <Input
                 value={courseValues.desc}
                 onChange={(e) =>
-                  setCourseValues({
-                    id: "",
-                    name: courseValues.name,
-                    desc: e.target.value,
-                  })
+                  setCourseValues({ ...courseValues, desc: e.target.value })
                 }
                 placeholder="Enter Description"
               />
@@ -189,8 +215,8 @@ function CourseModal({
 
           <ModalFooter>
             <Button
-              // onClick={id ? editCourses : addNewCourse}
-              onClick={addNewCourse}
+              onClick={courseValues.id.length ? editCourses : addNewCourse}
+              // onClick={editCourses}
               colorScheme="blue"
               mr={3}
             >

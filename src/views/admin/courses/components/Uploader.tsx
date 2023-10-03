@@ -49,7 +49,7 @@ function Uploader() {
         },
       })
       .then((res) => {
-        console.log("the uploaded file is:", res.data.data);
+        // console.log("the uploaded file is:", res.data.data);
         localStorage.setItem("pdfDetails",res.data.data);
         // setDataLoaded(true);
       })

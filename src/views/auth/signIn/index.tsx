@@ -86,7 +86,6 @@ function SignIn() {
     data: Data;
   };
 
-  //Different States
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
 
@@ -110,7 +109,6 @@ function SignIn() {
           email: values.email,
           password: values.password,
           code: 200,
-          // accessToken:''
         },
         {
           headers: {
@@ -124,12 +122,6 @@ function SignIn() {
       console.log(JSON.stringify(data, null, 4));
 
       console.log(status);
-
-      
-
-      // setAccessToken(localStorage.getItem(accessToken))
-
-      // console.log("Your access token is:",accessToken);
 
       if (data.code === 200) {
         localStorage.setItem("accessToken",data.data.accessToken);

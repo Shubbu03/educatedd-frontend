@@ -320,7 +320,7 @@ function Enrolled() {
           onConfirm={onConfirm}
         />
       </Box>
-      {console.log("props data is::", propVal)}
+      {/* {console.log("props data is::", propVal)} */}
       <ToastContainer
         position="top-right"
         autoClose={5000}
