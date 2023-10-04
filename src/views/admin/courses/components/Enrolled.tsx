@@ -22,6 +22,7 @@ import CourseModal from "./CourseModal";
 import DeleteConfirmModal from "./DeleteConfirmModal";
 import axios from "axios";
 import Loader from "components/loader/Loader";
+import { useHistory } from "react-router-dom";
 
 type RowObj = {
   title: string;
@@ -45,6 +46,8 @@ function Enrolled() {
     title: "",
     description: "",
   });
+
+  const history = useHistory();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -244,23 +247,44 @@ function Enrolled() {
         },
       })
       .then((res) => {
-        const value = res.data.data;
+        if (res.data.code === 200) {
+          const value = res.data.data;
+          const mappedData = value.map((item: any) => {
+            const date = new Date(item.createdAt);
+            const readableDate = `${date.getDate()}/${
+              date.getMonth() + 1
+            }/${date.getFullYear()}`;
 
-        const mappedData = value.map((item: any) => {
-          const date = new Date(item.createdAt);
-          const readableDate = `${date.getDate()}/${
-            date.getMonth() + 1
-          }/${date.getFullYear()}`;
+            return {
+              title: item.title,
+              id: item.id,
+              description: item.description,
+              date: readableDate,
+            };
+          });
+          setRows(mappedData);
+          console.log("Retrieved courses are::", mappedData);
+        } else {
+          localStorage.setItem("accessToken", "");
+          history.push("/login");
+        }
 
-          return {
-            title: item.title,
-            id: item.id,
-            description: item.description,
-            date: readableDate,
-          };
-        });
-        setRows(mappedData);
-        console.log("Retrieved courses are::", mappedData);
+        // const value = res.data.data;
+        // const mappedData = value.map((item: any) => {
+        //   const date = new Date(item.createdAt);
+        //   const readableDate = `${date.getDate()}/${
+        //     date.getMonth() + 1
+        //   }/${date.getFullYear()}`;
+
+        //   return {
+        //     title: item.title,
+        //     id: item.id,
+        //     description: item.description,
+        //     date: readableDate,
+        //   };
+        // });
+        // setRows(mappedData);
+        // console.log("Retrieved courses are::", mappedData);
       })
       .catch((error) => {
         console.error(error);
