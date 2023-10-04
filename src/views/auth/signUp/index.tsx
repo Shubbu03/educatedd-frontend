@@ -21,7 +21,7 @@ import {
 // Custom components
 // import { HSeparator } from "components/separator/Separator";
 import DefaultAuth from "layouts/auth/Default";
-// import Menu from "./Menu";
+import DropMenu from "./Menu";
 // Assets
 import illustration from "assets/img/auth/illustration.jpg";
 // import { FcGoogle } from "react-icons/fc";
@@ -89,15 +89,15 @@ function SignUp() {
   const [detail, setDetails] = React.useState({ email: "", password: "" });
 
   async function createUser() {
+    const userRole = localStorage.getItem("role");
     try {
-      // 👇️ const data: CreateUserResponse
       const { data, status } = await axios.post<CreateUserResponse>(
         "http://localhost:3005/users/account",
         {
           firstName: names.firstName,
           lastName: names.lastName,
           email: detail.email,
-          role: "AUTHOR",
+          role: userRole,
           password: detail.password,
           code: 200,
         },
@@ -126,7 +126,6 @@ function SignUp() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log("error message: ", error.message);
-        // 👇️ error: AxiosError<any, any>
         return error.message;
       } else {
         console.log("unexpected error: ", error);
@@ -134,7 +133,6 @@ function SignUp() {
       }
     }
   }
-  // const detailsSubmitted = () => {};
   return (
     <>
       <DefaultAuth illustrationBackground={illustration} image={illustration}>
@@ -221,7 +219,6 @@ function SignUp() {
                 onChange={(e) =>
                   setNames({ firstName: e.target.value, lastName: "" })
                 }
-                //   placeholder='mail@simmmple.com'
                 mb="24px"
                 fontWeight="500"
                 size="lg"
@@ -249,7 +246,6 @@ function SignUp() {
                     lastName: e.target.value,
                   })
                 }
-                //   placeholder='mail@simmmple.com'
                 mb="24px"
                 fontWeight="500"
                 size="lg"
@@ -274,13 +270,12 @@ function SignUp() {
                 onChange={(e) =>
                   setDetails({ email: e.target.value, password: "" })
                 }
-                //   placeholder='mail@simmmple.com'
                 mb="24px"
                 fontWeight="500"
                 size="lg"
               />
 
-              {/* <FormLabel
+              <FormLabel
                 ms="4px"
                 fontSize="sm"
                 fontWeight="500"
@@ -290,8 +285,8 @@ function SignUp() {
                 Role<Text color={brandStars}>*</Text>
               </FormLabel>
               <div>
-                <Menu />
-              </div> */}
+                <DropMenu />
+              </div>
 
               <FormLabel
                 ms="4px"

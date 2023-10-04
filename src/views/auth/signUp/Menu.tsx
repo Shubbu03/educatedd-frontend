@@ -1,70 +1,57 @@
-import React, { useState } from "react";
-import DropDown from "./DropDown";
+import React, { useEffect, useState } from "react";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  // MenuItemOption,
+  // MenuGroup,
+  // MenuOptionGroup,
+  // MenuDivider,
+  Button,
+} from "@chakra-ui/react";
 
-const Menu: React.FC = (): JSX.Element => {
-  const [showDropDown, setShowDropDown] = useState<boolean>(false);
-  const [selectRole, setSelectRole] = useState<string>("");
-  const roless = () => {
-    return ["ADMIN", "AUTHOR", "GUEST"];
+const DropMenu = () => {
+  const [role, setRole] = useState("");
+
+  const saveRole = (role: string) => {
+    // localStorage.removeItem("role");
+    localStorage.setItem("role", role);
+
   };
 
-  /**
-   * Toggle the drop down menu
-   */
-  const toggleDropDown = () => {
-    setShowDropDown(!showDropDown);
-  };
-
-  /**
-   * Hide the drop down menu if click occurs
-   * outside of the drop-down element.
-   *
-   * @param event  The mouse event
-   */
-  const dismissHandler = (event: React.FocusEvent<HTMLButtonElement>): void => {
-    if (event.currentTarget === event.target) {
-      setShowDropDown(false);
-    }
-  };
-
-  /**
-   * Callback function to consume the
-   * city name from the child component
-   *
-   * @param role  The selected role
-   */
-  const newRoleSelection = (role: string): void => {
-    setSelectRole(role);
-  };
-
+  useEffect(() => {}, [role]);
   return (
-    <>
-      <div className="announcement">
-        {/* <div>
-          {selectRole
-            ? `You selected ${selectRole} for your travel destination`
-            : "Select your travel destination"}
-        </div> */}
-      </div>
-      <button
-        className={showDropDown ? "active" : undefined}
-        onClick={(): void => toggleDropDown()}
-        onBlur={(e: React.FocusEvent<HTMLButtonElement>): void =>
-          dismissHandler(e)
-        }
-      >
-        <div>{selectRole ? "Select: " + selectRole : "Select ..."} </div>
-        {showDropDown && (
-          <DropDown
-            roles={roless()}
-            showDropDown={false}
-            toggleDropDown={(): void => toggleDropDown()}
-            rolesSelection={newRoleSelection}
-          />
+    <div>
+      <Menu>
+        {({ isOpen }) => (
+          <>
+            <MenuButton isActive={isOpen} as={Button}>
+              {role.length ? role : "Select"}
+            </MenuButton>
+            <MenuList>
+              <MenuItem
+                onClick={() => {
+                  setRole("Author");
+                  saveRole("Author");
+                }}
+              >
+                Author
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  setRole("Student");
+                  saveRole("Student");
+                }}
+              >
+                Student
+              </MenuItem>
+            </MenuList>
+          </>
         )}
-      </button>
-    </>
+      </Menu>
+    </div>
   );
 };
 
-export default Menu;
+export default DropMenu;
