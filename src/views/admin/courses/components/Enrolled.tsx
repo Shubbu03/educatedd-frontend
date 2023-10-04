@@ -39,8 +39,6 @@ function Enrolled() {
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
 
-  // const [editValues, setEditValues] = useState({ title: "", description: "" });
-
   const [propVal, setPropVal] = useState({
     id: "",
     title: "",
