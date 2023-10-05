@@ -16,7 +16,7 @@ import {
 import { SearchBar } from "components/navbar/searchBar/SearchBar";
 import { SidebarResponsive } from "components/sidebar/Sidebar";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect, useState } from "react";
 // Assets
 import { MdNotificationsNone } from "react-icons/md";
 import { useHistory } from "react-router-dom";
@@ -39,9 +39,22 @@ export default function HeaderLinks(props: { secondary: boolean }) {
   );
 
   const logOut = () => {
-    localStorage.setItem("accessToken",'');
+    localStorage.setItem("accessToken", "");
+    localStorage.setItem("role", "");
     history.push("/login");
-  }
+  };
+
+  const [checkRole, setCheckRole] = useState(false);
+
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+
+    if (role === "Student") {
+      setCheckRole(true);
+    } else {
+      setCheckRole(false);
+    }
+  }, [checkRole]);
 
   return (
     <Flex
@@ -65,7 +78,15 @@ export default function HeaderLinks(props: { secondary: boolean }) {
         borderRadius="30px"
       />
 
-      <SidebarResponsive routes={routes} />
+      {/* <SidebarResponsive routes={routes} /> */}
+      <>
+        {checkRole ? (
+          <SidebarResponsive routes={routes} />
+        ) : (
+          <SidebarResponsive routes={routes} />
+        )}
+        {console.log("checkRole value is::",checkRole)}
+      </>
       <Menu>
         <MenuButton p="0px">
           <Icon
@@ -164,9 +185,9 @@ export default function HeaderLinks(props: { secondary: boolean }) {
               borderRadius="8px"
               px="14px"
             >
-              <button 
-              style={{fontSize:'sm'}}
-              onClick={logOut}>Log Out</button>
+              <button style={{ fontSize: "sm" }} onClick={logOut}>
+                Log Out
+              </button>
               {/* <Text fontSize="sm">Log out</Text> */}
             </MenuItem>
           </Flex>

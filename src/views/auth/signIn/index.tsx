@@ -74,10 +74,11 @@ function SignIn() {
       theme: "light",
     });
 
-    type Data = {
-      id:string,
-      accessToken:string
-    }
+  type Data = {
+    id: string;
+    accessToken: string;
+    role: string;
+  };
 
   type LoginUserResponse = {
     email: string;
@@ -124,7 +125,8 @@ function SignIn() {
       console.log(status);
 
       if (data.code === 200) {
-        localStorage.setItem("accessToken",data.data.accessToken);
+        localStorage.setItem("accessToken", data.data.accessToken);
+        localStorage.setItem("role", data.data.role);
         successToast();
         history.push("/admin");
       } else {

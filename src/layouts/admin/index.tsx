@@ -48,7 +48,7 @@ export default function Dashboard(props: { [x: string]: any }) {
 	};
 	const getRoutes = (routes: RoutesType[]): any => {
 		return routes.map((route: RoutesType, key: any) => {
-			if (route.layout === '/admin') {
+			if (route.layout === '/admin' || route.layout === '/user') {
 				return <Route path={route.layout + route.path} component={route.component} key={key} />;
 			} else {
 				return null;

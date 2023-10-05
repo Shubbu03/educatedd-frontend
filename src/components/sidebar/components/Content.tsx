@@ -3,6 +3,7 @@ import { Box, Flex, Stack } from '@chakra-ui/react';
 //   Custom components
 import Brand from 'components/sidebar/components/Brand';
 import Links from 'components/sidebar/components/Links';
+// import { routesUser } from 'routes';
 // import SidebarCard from 'components/sidebar/components/SidebarCard';
 
 // FUNCTIONS
