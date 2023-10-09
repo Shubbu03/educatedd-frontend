@@ -6,20 +6,10 @@ import {
   Button,
   useColorModeValue,
 } from "@chakra-ui/react";
-import {
-  createColumnHelper,
-  // PaginationState,
-  // getFilteredRowModel,
-  // getPaginationRowModel,
-  // ColumnDef,
-  // OnChangeFn,
-} from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { MdAdd, MdEdit, MdDelete } from "react-icons/md";
 import ComplexTable from "views/admin/dataTables/components/ComplexTable";
-import CourseModal from "./CourseModal";
-import DeleteConfirmModal from "./DeleteConfirmModal";
 import axios from "axios";
 import Loader from "components/loader/Loader";
 import { useHistory } from "react-router-dom";
@@ -53,8 +43,6 @@ function EnrolledCourses() {
   const [rows, setRows] = useState([]);
 
   const [dataLoaded, setDataLoaded] = useState(false);
-
-  const [id, setID] = useState("");
 
   const columns = [
     columnHelper.accessor("title", {
@@ -146,17 +134,11 @@ function EnrolledCourses() {
                 h="36px"
                 onClick={() => {
                   setIsOpen(true);
-                  // // setID(info.row.original.id);
-                  // // setEditValues({
-                  // //   title: info.row.original.title,
-                  // //   description: info.row.original.description,
-                  // // });
                   setPropVal({
                     id: info.row.original.id,
                     title: info.row.original.title,
                     // description: info.row.original.description,
                   });
-                  //   console.log("ENROLLED IN COURSE!!!!!");
                 }}
               >
                 {/* <Icon
@@ -238,7 +220,6 @@ function EnrolledCourses() {
       <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
         <ComplexTable tableData={rows} columns={columns} title={"Courses"} />
         {dataLoaded && <Loader />}
-
         <EnrolledModal
           isOpen={isOpen}
           onOpen={() => setIsOpen(true)}
