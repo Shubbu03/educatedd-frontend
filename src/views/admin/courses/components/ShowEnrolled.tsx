@@ -10,14 +10,19 @@ import {
 import { createColumnHelper } from "@tanstack/react-table";
 import axios from "axios";
 import Loader from "components/loader/Loader";
+import PDFViewer from "pdf-viewer-reactjs";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import ComplexTable from "views/admin/dataTables/components/ComplexTable";
+import EnrolledCourseDetailsModal from "./EnrolledCourseDetails";
+import EnrolledCourseDetails from "./EnrolledCourseDetails";
 
 type RowObj = {
   title: string;
   description: string;
-  date: string;
+  // date: string;
+  id: string;
+  pdfDetails: string;
   progress: number;
   button: string;
 };
@@ -32,6 +37,15 @@ function ShowEnrolled() {
   const [dataLoaded, setDataLoaded] = useState(false);
 
   const [rows, setRows] = useState([]);
+
+  const [propVal, setPropVal] = useState({
+    id: "",
+    title: "",
+    description: "",
+    pdfDetails: ""
+  });
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const columns = [
     columnHelper.accessor("title", {
@@ -75,26 +89,26 @@ function ShowEnrolled() {
       ),
     }),
 
-    columnHelper.accessor("date", {
-      id: "date",
-      header: () => (
-        <Text
-          justifyContent="space-between"
-          align="center"
-          fontSize={{ sm: "10px", lg: "12px" }}
-          color="gray.400"
-        >
-          DATE
-        </Text>
-      ),
-      cell: (info) => (
-        <>
-          <Text color={textColor} fontSize="sm" fontWeight="700">
-            {info.getValue()}
-          </Text>
-        </>
-      ),
-    }),
+    // columnHelper.accessor("date", {
+    //   id: "date",
+    //   header: () => (
+    //     <Text
+    //       justifyContent="space-between"
+    //       align="center"
+    //       fontSize={{ sm: "10px", lg: "12px" }}
+    //       color="gray.400"
+    //     >
+    //       DATE
+    //     </Text>
+    //   ),
+    //   cell: (info) => (
+    //     <>
+    //       <Text color={textColor} fontSize="sm" fontWeight="700">
+    //         {info.getValue()}
+    //       </Text>
+    //     </>
+    //   ),
+    // }),
 
     columnHelper.accessor("progress", {
       id: "progress",
@@ -149,15 +163,17 @@ function ShowEnrolled() {
                 minW="36px"
                 h="36px"
                 onClick={() => {
-                  console.log("OPEN BUTTON CLICKED!!");
-                  // setIsOpen(true);
 
-                  // setPropVal({
-                  //   id: info.row.original.id,
-                  //   title: info.row.original.title,
-                  //   description: info.row.original.description,
-                  // });
-                  // console.log("info from edit is::",info)
+                  // history.push("/enrolled")
+                  setIsOpen(true);
+
+                  setPropVal({
+                    id: info.row.original.id,
+                    title: info.row.original.title,
+                    description: info.row.original.description,
+                    pdfDetails: info.row.original.pdfDetails
+                  });
+                  console.log("info of SELECTED from edit is::",propVal)
                 }}
               >
                 {/* <Icon
@@ -209,6 +225,7 @@ function ShowEnrolled() {
         },
       })
       .then((res) => {
+        // console.log("resss is ::",res)
         if (res.data.code === 200) {
           const value = res.data.data;
           const mappedData = value.map((item: any) => {
@@ -221,7 +238,8 @@ function ShowEnrolled() {
               title: item.title,
               id: item.id,
               description: item.description,
-              date: readableDate,
+              pdfDetails: item.pdfDetails,
+              // date: readableDate,
             };
           });
           setRows(mappedData);
@@ -244,12 +262,26 @@ function ShowEnrolled() {
   return (
     <>
       <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+      {dataLoaded && <Loader />}
         <ComplexTable
           tableData={rows}
           columns={columns}
           title={"Enrolled Courses"}
         />
-        {dataLoaded && <Loader />}
+
+        
+        <EnrolledCourseDetailsModal
+        isOpen={isOpen}
+        onOpen={() => setIsOpen(true)}
+          onClose={() => {
+            setIsOpen(false);
+            getEnrolledUserCourses();
+          }}
+          id={propVal.id}
+          title={propVal.title}
+          description={propVal.description}
+          pdfDetails={propVal.pdfDetails}
+         />
       </Box>
     </>
   );

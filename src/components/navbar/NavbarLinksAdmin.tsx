@@ -85,7 +85,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
         ) : (
           <SidebarResponsive routes={routes} />
         )}
-        {console.log("checkRole value is::",checkRole)}
+        {/* {console.log("checkRole value is::",checkRole)} */}
       </>
       <Menu>
         <MenuButton p="0px">

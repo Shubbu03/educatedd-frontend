@@ -10,6 +10,7 @@ import SignUp from "views/auth/signUp";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme/theme";
 import SignIn from "views/auth/signIn";
+import EnrolledCourseDetails from "views/admin/courses/components/EnrolledCourseDetails";
 
 ReactDOM.render(
   <ChakraProvider theme={theme}>
@@ -22,6 +23,7 @@ ReactDOM.render(
           <Route path={`/auth`} component={AuthLayout} />
           <Route path={`/admin`} component={AdminLayout} />
           <Route path={`/rtl`} component={RTLLayout} />
+          <Route path={`/enrolled`} component={EnrolledCourseDetails}/>
           <Route path="/" render={() => <Redirect to="/login" />} />
           {/* <redirectedirect from="/" to="/login" /> */}
         </Switch>

@@ -21,8 +21,11 @@
 		"@types/react-dom": "^18.0.6",
 		"apexcharts": "^3.35.2",
 		"axios": "^1.5.0",
+		"bulma": "^0.9.4",
+		"bulma-helpers": "^0.4.3",
 		"cors": "^2.8.5",
 		"framer-motion": "^4.1.17",
+		"pdf-viewer-reactjs": "^2.2.3",
 		"react": "^17.0.2",
 		"react-apexcharts": "^1.4.0",
 		"react-calendar": "^3.7.0",
@@ -68,6 +71,7 @@
 		]
 	},
 	"devDependencies": {
+		"@types/pdf-viewer-reactjs": "^2.2.3",
 		"@types/react-calendar": "^3.5.2",
 		"@types/react-router-dom": "^5.3.3",
 		"@types/react-tag-input": "^6.6.1",

@@ -13,6 +13,7 @@ import Files from "views/admin/myFiles";
 import Courses from "views/admin/courses/components";
 import Profile from "views/admin/profile";
 import ShowEnrolled from "views/admin/courses/components/ShowEnrolled";
+import EnrolledCourseDetails from "views/admin/courses/components/EnrolledCourseDetails";
 
 const isStudent = () => {
   const role = localStorage.getItem("role");
@@ -72,6 +73,21 @@ const routes = [
     component: ShowEnrolled,
     isVisible: true,
   },
+  // {
+  //   name: "Enrolled Courses Details",
+  //   layout: "/admin",
+  //   icon: (
+  //     <Icon
+  //       as={MdOutlineShoppingCart}
+  //       width="20px"
+  //       height="20px"
+  //       color="inherit"
+  //     />
+  //   ),
+  //   path: "/details",
+  //   component: EnrolledCourseDetails,
+  //   isVisible: true,
+  // },
   {
     name: "Profile",
     layout: "/admin",
