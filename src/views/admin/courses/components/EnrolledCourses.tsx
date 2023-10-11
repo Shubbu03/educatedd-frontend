@@ -20,6 +20,7 @@ type RowObj = {
   description: string;
   date: string;
   id: string;
+  chapter: string;
   buttons: string;
 };
 
@@ -33,6 +34,7 @@ function EnrolledCourses() {
   const [propVal, setPropVal] = useState({
     id: "",
     title: "",
+    chapter: ""
     // description: "",
   });
 
@@ -86,6 +88,28 @@ function EnrolledCourses() {
       ),
     }),
 
+    columnHelper.accessor("chapter", {
+      id: "chapter",
+      header: () => (
+        <Text
+          justifyContent="space-between"
+          align="center"
+          fontSize={{ sm: "10px", lg: "12px" }}
+          color="gray.400"
+        >
+          CHAPTER
+        </Text>
+      ),
+      cell: (info: any) => (
+        <Flex align="center">
+          <Text color={textColor} fontSize="sm" fontWeight="700">
+            {info.getValue()}
+          </Text>
+        </Flex>
+      ),
+    }),
+
+
     columnHelper.accessor("date", {
       id: "date",
       header: () => (
@@ -137,6 +161,7 @@ function EnrolledCourses() {
                   setPropVal({
                     id: info.row.original.id,
                     title: info.row.original.title,
+                    chapter: info.row.original.chapter
                     // description: info.row.original.description,
                   });
                 }}
@@ -179,6 +204,7 @@ function EnrolledCourses() {
               title: item.title,
               id: item.id,
               description: item.description,
+              chapter: item.chapter,
               date: readableDate,
             };
           });

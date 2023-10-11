@@ -8,6 +8,11 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
   FormControl,
   FormLabel,
   Input,
@@ -32,6 +37,7 @@ type Props = {
   id: string;
   title: string;
   description: string;
+  chapter: string;
 };
 
 function CourseModal({
@@ -42,11 +48,13 @@ function CourseModal({
   id,
   title,
   description,
+  chapter,
 }: Props) {
   const [courseValues, setCourseValues] = useState({
     id: "00000000-0000-0000-0000-000000000000",
     name: "",
     desc: "",
+    chapter: "",
   });
 
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -98,7 +106,7 @@ function CourseModal({
 
     await axios
       .post(
-        `http://localhost:3005/courses?Title=${courseValues.name}&Description=${courseValues.desc}&pdfDetails=${url}`,
+        `http://localhost:3005/courses?Title=${courseValues.name}&Description=${courseValues.desc}&pdfDetails=${url}&chapter=${courseValues.chapter}`,
         {},
         {
           headers: {
@@ -139,6 +147,7 @@ function CourseModal({
           data: {
             title: `${courseValues.name}`,
             description: `${courseValues.desc}`,
+            chapter: `${courseValues.chapter}`,
           },
         },
         {
@@ -168,8 +177,13 @@ function CourseModal({
       courseValues.name,
       courseValues.desc
     );
-    setCourseValues({ id: id, name: title, desc: description });
-  }, [id, title, description]);
+    setCourseValues({
+      id: id,
+      name: title,
+      desc: description,
+      chapter: chapter,
+    });
+  }, [id, title, description, chapter]);
 
   return (
     <>
@@ -205,6 +219,25 @@ function CourseModal({
             <FormControl mt={4}>
               <FormLabel>Upload Files</FormLabel>
               <Uploader />
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>Chapters</FormLabel>
+              <Input
+                value={courseValues.chapter}
+                onChange={(e) =>
+                  setCourseValues({ ...courseValues, chapter: e.target.value })
+                }
+                placeholder="Enter Number of Chapter"
+              />
+
+              {/* <NumberInput defaultValue={0} step={1}>
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput> */}
             </FormControl>
 
             {/* <FormControl mt={4}>

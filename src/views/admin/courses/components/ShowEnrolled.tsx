@@ -19,6 +19,7 @@ type RowObj = {
   description: string;
   // date: string;
   id: string;
+  chapter: string;
   pdfDetails: string;
   progress: number;
   button: string;
@@ -40,6 +41,7 @@ function ShowEnrolled() {
     title: "",
     description: "",
     pdfDetails: "",
+    chapter: "",
   });
 
   const [isOpen, setIsOpen] = useState(false);
@@ -75,6 +77,27 @@ function ShowEnrolled() {
           color="gray.400"
         >
           DESCRIPTION
+        </Text>
+      ),
+      cell: (info: any) => (
+        <Flex align="center">
+          <Text color={textColor} fontSize="sm" fontWeight="700">
+            {info.getValue()}
+          </Text>
+        </Flex>
+      ),
+    }),
+
+    columnHelper.accessor("chapter", {
+      id: "chapter",
+      header: () => (
+        <Text
+          justifyContent="space-between"
+          align="center"
+          fontSize={{ sm: "10px", lg: "12px" }}
+          color="gray.400"
+        >
+          CHAPTER
         </Text>
       ),
       cell: (info: any) => (
@@ -147,42 +170,13 @@ function ShowEnrolled() {
                     title: info.row.original.title,
                     description: info.row.original.description,
                     pdfDetails: info.row.original.pdfDetails,
+                    chapter: info.row.original.chapter,
                   });
                   console.log("info of SELECTED from edit is::", propVal);
                 }}
               >
-                {/* <Icon
-                  transition="0.2s linear"
-                  w="20px"
-                  h="20px"
-                  as={MdEdit}
-                  color="brand.500"
-                /> */}
                 View
               </Button>
-
-              {/* <Button
-                position="relative"
-                bg="white"
-                _hover={{ bg: "whiteAlpha.900" }}
-                _active={{ bg: "white" }}
-                _focus={{ bg: "white" }}
-                p="0px !important"
-                minW="36px"
-                h="36px"
-                onClick={() => {
-                  // setIsDeleteOpen(true);
-                  // setID(info.row.original.id);
-                }}
-              >
-                <Icon
-                  transition="0.2s linear"
-                  w="20px"
-                  h="20px"
-                  as={MdDelete}
-                  color="brand.500"
-                />
-              </Button> */}
             </>
           }
         </Flex>
@@ -213,6 +207,7 @@ function ShowEnrolled() {
               id: item.id,
               description: item.description,
               pdfDetails: item.pdfDetails,
+              chapter: item.chapter,
               // date: readableDate,
             };
           });
@@ -253,6 +248,7 @@ function ShowEnrolled() {
           title={propVal.title}
           description={propVal.description}
           pdfDetails={propVal.pdfDetails}
+          chapter={propVal.chapter}
         />
       </Box>
     </>

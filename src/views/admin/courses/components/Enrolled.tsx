@@ -27,6 +27,7 @@ import { useHistory } from "react-router-dom";
 type RowObj = {
   title: string;
   description: string;
+  chapter: string;
   date: string;
   id: string;
   buttons: string;
@@ -43,6 +44,7 @@ function Enrolled() {
     id: "",
     title: "",
     description: "",
+    chapter:""
   });
 
   const history = useHistory();
@@ -88,6 +90,26 @@ function Enrolled() {
           color="gray.400"
         >
           DESCRIPTION
+        </Text>
+      ),
+      cell: (info: any) => (
+        <Flex align="center">
+          <Text color={textColor} fontSize="sm" fontWeight="700">
+            {info.getValue()}
+          </Text>
+        </Flex>
+      ),
+    }),
+    columnHelper.accessor("chapter", {
+      id: "chapter",
+      header: () => (
+        <Text
+          justifyContent="space-between"
+          align="center"
+          fontSize={{ sm: "10px", lg: "12px" }}
+          color="gray.400"
+        >
+          CHAPTERS
         </Text>
       ),
       cell: (info: any) => (
@@ -156,6 +178,7 @@ function Enrolled() {
                     id: info.row.original.id,
                     title: info.row.original.title,
                     description: info.row.original.description,
+                    chapter: info.row.original.chapter
                   });
                   // console.log("info from edit is::",info)
                 }}
@@ -257,6 +280,7 @@ function Enrolled() {
               title: item.title,
               id: item.id,
               description: item.description,
+              chapter: item.chapter,
               date: readableDate,
             };
           });
@@ -333,6 +357,7 @@ function Enrolled() {
           id={propVal.id}
           title={propVal.title}
           description={propVal.description}
+          chapter={propVal.chapter}
           // editValues={id:propVal.id,propVal.title,propVal.description}
         />
         <DeleteConfirmModal
