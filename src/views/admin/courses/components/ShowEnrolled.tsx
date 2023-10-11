@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Flex,
-  Icon,
   useColorModeValue,
   Text,
   Progress,
@@ -10,12 +9,10 @@ import {
 import { createColumnHelper } from "@tanstack/react-table";
 import axios from "axios";
 import Loader from "components/loader/Loader";
-import PDFViewer from "pdf-viewer-reactjs";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import ComplexTable from "views/admin/dataTables/components/ComplexTable";
 import EnrolledCourseDetailsModal from "./EnrolledCourseDetails";
-import EnrolledCourseDetails from "./EnrolledCourseDetails";
 
 type RowObj = {
   title: string;
@@ -42,7 +39,7 @@ function ShowEnrolled() {
     id: "",
     title: "",
     description: "",
-    pdfDetails: ""
+    pdfDetails: "",
   });
 
   const [isOpen, setIsOpen] = useState(false);
@@ -88,27 +85,6 @@ function ShowEnrolled() {
         </Flex>
       ),
     }),
-
-    // columnHelper.accessor("date", {
-    //   id: "date",
-    //   header: () => (
-    //     <Text
-    //       justifyContent="space-between"
-    //       align="center"
-    //       fontSize={{ sm: "10px", lg: "12px" }}
-    //       color="gray.400"
-    //     >
-    //       DATE
-    //     </Text>
-    //   ),
-    //   cell: (info) => (
-    //     <>
-    //       <Text color={textColor} fontSize="sm" fontWeight="700">
-    //         {info.getValue()}
-    //       </Text>
-    //     </>
-    //   ),
-    // }),
 
     columnHelper.accessor("progress", {
       id: "progress",
@@ -163,7 +139,6 @@ function ShowEnrolled() {
                 minW="36px"
                 h="36px"
                 onClick={() => {
-
                   // history.push("/enrolled")
                   setIsOpen(true);
 
@@ -171,9 +146,9 @@ function ShowEnrolled() {
                     id: info.row.original.id,
                     title: info.row.original.title,
                     description: info.row.original.description,
-                    pdfDetails: info.row.original.pdfDetails
+                    pdfDetails: info.row.original.pdfDetails,
                   });
-                  console.log("info of SELECTED from edit is::",propVal)
+                  console.log("info of SELECTED from edit is::", propVal);
                 }}
               >
                 {/* <Icon
@@ -225,14 +200,13 @@ function ShowEnrolled() {
         },
       })
       .then((res) => {
-        // console.log("resss is ::",res)
         if (res.data.code === 200) {
           const value = res.data.data;
           const mappedData = value.map((item: any) => {
-            const date = new Date(item.createdAt);
-            const readableDate = `${date.getDate()}/${
-              date.getMonth() + 1
-            }/${date.getFullYear()}`;
+            // const date = new Date(item.createdAt);
+            // const readableDate = `${date.getDate()}/${
+            //   date.getMonth() + 1
+            // }/${date.getFullYear()}`;
 
             return {
               title: item.title,
@@ -262,17 +236,15 @@ function ShowEnrolled() {
   return (
     <>
       <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-      {dataLoaded && <Loader />}
+        {dataLoaded && <Loader />}
         <ComplexTable
           tableData={rows}
           columns={columns}
           title={"Enrolled Courses"}
         />
-
-        
         <EnrolledCourseDetailsModal
-        isOpen={isOpen}
-        onOpen={() => setIsOpen(true)}
+          isOpen={isOpen}
+          onOpen={() => setIsOpen(true)}
           onClose={() => {
             setIsOpen(false);
             getEnrolledUserCourses();
@@ -281,7 +253,7 @@ function ShowEnrolled() {
           title={propVal.title}
           description={propVal.description}
           pdfDetails={propVal.pdfDetails}
-         />
+        />
       </Box>
     </>
   );

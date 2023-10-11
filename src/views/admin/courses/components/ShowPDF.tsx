@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PDFViewer from "pdf-viewer-reactjs";
 
 function ShowPDF() {
-   let pageNo = 1;
+  
+  const [pageNo,setPageNo] = useState(1);
 
   const forward = () => {
-     pageNo = pageNo + 1
-  }
+     setPageNo(pageNo + 1);
+     console.log("page;;;",pageNo)
+  };
 
+  // useEffect(() => {
+  //   forward()
+  // });
   return (
     <PDFViewer
       document={{

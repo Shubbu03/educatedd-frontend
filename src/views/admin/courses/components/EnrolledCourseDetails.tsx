@@ -1,6 +1,6 @@
 import {
-  Box,
-  Progress,
+  // Box,
+  // Progress,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import Loader from "components/loader/Loader";
 import { useEffect, useRef, useState } from "react";
-import Details from "./Details";
+// import Details from "./Details";
 import ShowPDF from "./ShowPDF";
 
 type Props = {
@@ -45,8 +45,6 @@ function EnrolledCourseDetailsModal({
   const initialRef = useRef(null);
 
   useEffect(() => {
-    // console.log("COURSE ID IS::", id);
-
     setCourseValues({
       id: id,
       title: title,
@@ -61,15 +59,14 @@ function EnrolledCourseDetailsModal({
         initialFocusRef={initialRef}
         isOpen={isOpen}
         onClose={onClose}
-        size="5xl"
+        size="6xl"
       >
         <ModalOverlay />
         <ModalContent>
+          {/* <Progress value={100} w="max-content"/> */}
           <ModalHeader>{title}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody pb={6}>
-            {description} 
-          </ModalBody>
+          <ModalBody pb={6}>{description}</ModalBody>
           <ModalBody>
             <ShowPDF />
           </ModalBody>
@@ -78,7 +75,6 @@ function EnrolledCourseDetailsModal({
             <Button onClick={onClose} colorScheme="blue" mr={3}>
               OK
             </Button>
-            {/* <Button onClick={onClose}>Cancel</Button> */}
           </ModalFooter>
         </ModalContent>
       </Modal>
