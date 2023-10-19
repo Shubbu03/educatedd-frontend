@@ -8,11 +8,17 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
   Button,
   FormControl,
   FormLabel,
   Input,
+  Progress,
 } from "@chakra-ui/react";
+import axios from "axios";
 import Loader from "components/loader/Loader";
 import { useEffect, useRef, useState } from "react";
 // import Details from "./Details";
@@ -37,18 +43,51 @@ function EnrolledCourseDetailsModal({
   title,
   description,
   pdfDetails,
-  chapter
+  chapter,
 }: Props) {
   const [courseValues, setCourseValues] = useState({
     id: "00000000-0000-0000-0000-000000000000",
     title: "",
     description: "",
     pdfDetails: "",
-    chapter:""
+    chapter: "",
   });
+
+  const [progress, setProgress] = useState(0);
+
   const [dataLoaded, setDataLoaded] = useState(false);
 
   const initialRef = useRef(null);
+
+
+  async function updateProgress(){
+     const accessToken = localStorage.getItem("accessToken");
+
+     await axios
+      .put(
+        `http://localhost:3005/courses/enrolled/{id}?CourseID=${courseValues.id}&chapterCompleted=${progress}`,
+        {
+          data: {
+            chapterCompleted: `${progress}`,
+          },
+        },
+        {
+          headers: {
+            "x-api-token": `${accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log("the edited course is:", res);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => {
+        setDataLoaded(false);
+        onClose();
+      });
+  } 
 
   useEffect(() => {
     setCourseValues({
@@ -56,9 +95,9 @@ function EnrolledCourseDetailsModal({
       title: title,
       description: description,
       pdfDetails: pdfDetails,
-      chapter: chapter
+      chapter: chapter,
     });
-  }, [id, title, description, pdfDetails,chapter]);
+  }, [id, title, description, pdfDetails, chapter]);
   return (
     <>
       {dataLoaded && <Loader />}
@@ -70,7 +109,7 @@ function EnrolledCourseDetailsModal({
       >
         <ModalOverlay />
         <ModalContent>
-          {/* <Progress value={100} w="max-content"/> */}
+          {/* <Progress value={progress} /> */}
           <ModalHeader>{title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>{description}</ModalBody>
@@ -80,19 +119,24 @@ function EnrolledCourseDetailsModal({
 
           <ModalBody pb={6}>Total Chapters: {chapter}</ModalBody>
 
-          {/* <FormControl mt={4}>
-              <FormLabel>Completed Chapters: </FormLabel>
-              <Input
-                // value={courseValues.desc}
-                // onChange={(e) =>
-                //   setCourseValues({ ...courseValues, desc: e.target.value })
-                // }
-                placeholder="Enter Completed Chapters"
-              />
-            </FormControl> */}
+          <FormControl mt={4}>
+            <FormLabel ml={5}>Completed Chapters: </FormLabel>
+            <NumberInput
+              ml={5}
+              mr={50}
+              defaultValue={0}
+              max={Number(chapter)}
+              onChange={(e) => setProgress(Number(e.valueOf()))}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </FormControl>
 
           <ModalFooter>
-            <Button onClick={onClose} colorScheme="blue" mr={3}>
+            <Button onClick={updateProgress} colorScheme="blue" mr={3}>
               OK
             </Button>
           </ModalFooter>

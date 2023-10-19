@@ -162,7 +162,6 @@ function ShowEnrolled() {
                 minW="36px"
                 h="36px"
                 onClick={() => {
-                  // history.push("/enrolled")
                   setIsOpen(true);
 
                   setPropVal({
@@ -172,7 +171,7 @@ function ShowEnrolled() {
                     pdfDetails: info.row.original.pdfDetails,
                     chapter: info.row.original.chapter,
                   });
-                  console.log("info of SELECTED from edit is::", propVal);
+                  // console.log("info of SELECTED from edit is::", propVal);
                 }}
               >
                 View
@@ -183,6 +182,27 @@ function ShowEnrolled() {
       ),
     }),
   ];
+
+  async function getProgress() {
+    const accessToken1 = localStorage.getItem("accessToken");
+    await axios
+      .get("http://localhost:3005/courses/enrolled/chapter", {
+        headers: {
+          "x-api-token": `${accessToken1}`,
+        },
+      })
+      .then((res) => {
+        const value = res.data.data;
+
+        const mappedValue = value.map((item:any) => {
+          return {
+            chapter:item.chapter,
+          }
+        })
+
+        console.log("The mappedValue from getProgress() is::", mappedValue);
+      });
+  }
 
   async function getEnrolledUserCourses() {
     const accessToken = localStorage.getItem("accessToken");
@@ -211,7 +231,9 @@ function ShowEnrolled() {
               // date: readableDate,
             };
           });
+          getProgress();
           setRows(mappedData);
+          console.log("Values of courses chapter are::",mappedData[2].chapter)
           console.log("Retrieved courses are::", mappedData);
         } else {
           localStorage.setItem("accessToken", "");

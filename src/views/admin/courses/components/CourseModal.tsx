@@ -171,7 +171,6 @@ function CourseModal({
   };
 
   useEffect(() => {
-    // console.log("edited values are::", id, title, description);
     console.log(
       "edited title and desc are::",
       courseValues.name,
@@ -226,7 +225,7 @@ function CourseModal({
               <Input
                 value={courseValues.chapter}
                 onChange={(e) =>
-                  setCourseValues({ ...courseValues, chapter: e.target.value })
+                  setCourseValues({ ...courseValues, chapter: String(e.target.value) })
                 }
                 placeholder="Enter Number of Chapter"
               />
