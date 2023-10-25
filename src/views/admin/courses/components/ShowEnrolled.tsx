@@ -209,7 +209,6 @@ function ShowEnrolled() {
       .then(async (res) => {
         if (res.data.code === 200) {
           const value = res.data.data;
-          debugger;
           const mappedData = value.map((item: any) => {
             arr2.push(item);
             passProgressProp(item.id);
