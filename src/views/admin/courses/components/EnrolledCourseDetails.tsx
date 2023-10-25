@@ -1,6 +1,4 @@
 import {
-  // Box,
-  // Progress,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -15,13 +13,10 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Input,
-  Progress,
 } from "@chakra-ui/react";
 import axios from "axios";
 import Loader from "components/loader/Loader";
 import { useEffect, useRef, useState } from "react";
-// import Details from "./Details";
 import ShowPDF from "./ShowPDF";
 
 type Props = {
@@ -32,7 +27,9 @@ type Props = {
   title: string;
   description: string;
   chapter: string;
+  completedChapter: string;
   pdfDetails: string;
+  arr: any[];
 };
 
 function EnrolledCourseDetailsModal({
@@ -44,6 +41,8 @@ function EnrolledCourseDetailsModal({
   description,
   pdfDetails,
   chapter,
+  completedChapter,
+  arr,
 }: Props) {
   const [courseValues, setCourseValues] = useState({
     id: "00000000-0000-0000-0000-000000000000",
@@ -51,6 +50,8 @@ function EnrolledCourseDetailsModal({
     description: "",
     pdfDetails: "",
     chapter: "",
+    completedChapter: "",
+    arr: [],
   });
 
   const [progress, setProgress] = useState(0);
@@ -59,11 +60,10 @@ function EnrolledCourseDetailsModal({
 
   const initialRef = useRef(null);
 
+  async function updateProgress() {
+    const accessToken = localStorage.getItem("accessToken");
 
-  async function updateProgress(){
-     const accessToken = localStorage.getItem("accessToken");
-
-     await axios
+    await axios
       .put(
         `http://localhost:3005/courses/enrolled/{id}?CourseID=${courseValues.id}&chapterCompleted=${progress}`,
         {
@@ -87,7 +87,18 @@ function EnrolledCourseDetailsModal({
         setDataLoaded(false);
         onClose();
       });
-  } 
+  }
+
+  // async function setAlreadyExistingProgress() : Promise<StringOrNumber>{
+  //   for (let i = 0; i < arr.length; i++) {
+  //     if (arr[i].id === id) {
+  //       setCourseValues({ ...courseValues, completedChapter: arr[i].chapter });
+  //       return arr[i].chapter;
+  //     }
+  //   }
+  // }
+
+  // const newValue  = setAlreadyExistingProgress()
 
   useEffect(() => {
     setCourseValues({
@@ -96,8 +107,10 @@ function EnrolledCourseDetailsModal({
       description: description,
       pdfDetails: pdfDetails,
       chapter: chapter,
+      completedChapter: completedChapter,
+      arr: arr,
     });
-  }, [id, title, description, pdfDetails, chapter]);
+  }, [id, title, description, pdfDetails, chapter, completedChapter, arr]);
   return (
     <>
       {dataLoaded && <Loader />}
@@ -124,7 +137,7 @@ function EnrolledCourseDetailsModal({
             <NumberInput
               ml={5}
               mr={50}
-              defaultValue={0}
+              defaultValue={completedChapter}
               max={Number(chapter)}
               onChange={(e) => setProgress(Number(e.valueOf()))}
             >
@@ -138,6 +151,24 @@ function EnrolledCourseDetailsModal({
           <ModalFooter>
             <Button onClick={updateProgress} colorScheme="blue" mr={3}>
               OK
+            </Button>
+            <Button
+              onClick={() => {
+                onClose();
+                setCourseValues({
+                  id: "",
+                  title: "",
+                  description: "",
+                  pdfDetails: "",
+                  chapter: "",
+                  completedChapter: "",
+                  arr: [],
+                });
+              }}
+              colorScheme="red"
+              mr={3}
+            >
+              Cancel
             </Button>
           </ModalFooter>
         </ModalContent>

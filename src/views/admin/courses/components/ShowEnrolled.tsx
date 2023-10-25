@@ -17,12 +17,18 @@ import EnrolledCourseDetailsModal from "./EnrolledCourseDetails";
 type RowObj = {
   title: string;
   description: string;
-  // date: string;
   id: string;
   chapter: string;
   pdfDetails: string;
   progress: number;
   button: string;
+};
+
+type Data = {
+  title: string;
+  description: string;
+  chapter: string;
+  progress: number;
 };
 
 const columnHelper = createColumnHelper<RowObj>();
@@ -44,7 +50,12 @@ function ShowEnrolled() {
     chapter: "",
   });
 
+  const [progressProp, setProgressProp] = useState("");
+
   const [isOpen, setIsOpen] = useState(false);
+
+  let arr1: any[] = [];
+  let arr2: any[] = [];
 
   const columns = [
     columnHelper.accessor("title", {
@@ -162,8 +173,6 @@ function ShowEnrolled() {
                 minW="36px"
                 h="36px"
                 onClick={() => {
-                  setIsOpen(true);
-
                   setPropVal({
                     id: info.row.original.id,
                     title: info.row.original.title,
@@ -171,6 +180,9 @@ function ShowEnrolled() {
                     pdfDetails: info.row.original.pdfDetails,
                     chapter: info.row.original.chapter,
                   });
+                  console.log("enter view");
+                  passProgressProp(info.row.original.id);
+                  setIsOpen(true);
                   // console.log("info of SELECTED from edit is::", propVal);
                 }}
               >
@@ -183,26 +195,7 @@ function ShowEnrolled() {
     }),
   ];
 
-  async function getProgress() {
-    const accessToken1 = localStorage.getItem("accessToken");
-    await axios
-      .get("http://localhost:3005/courses/enrolled/chapter", {
-        headers: {
-          "x-api-token": `${accessToken1}`,
-        },
-      })
-      .then((res) => {
-        const value = res.data.data;
-
-        const mappedValue = value.map((item:any) => {
-          return {
-            chapter:item.chapter,
-          }
-        })
-
-        console.log("The mappedValue from getProgress() is::", mappedValue);
-      });
-  }
+  //ENTRY POINT FUNCTION FOR THE PAGE->
 
   async function getEnrolledUserCourses() {
     const accessToken = localStorage.getItem("accessToken");
@@ -213,27 +206,23 @@ function ShowEnrolled() {
           "x-api-token": `${accessToken}`,
         },
       })
-      .then((res) => {
+      .then(async (res) => {
         if (res.data.code === 200) {
           const value = res.data.data;
+          debugger;
           const mappedData = value.map((item: any) => {
-            // const date = new Date(item.createdAt);
-            // const readableDate = `${date.getDate()}/${
-            //   date.getMonth() + 1
-            // }/${date.getFullYear()}`;
-
+            arr2.push(item);
+            passProgressProp(item.id);
             return {
               title: item.title,
               id: item.id,
               description: item.description,
               pdfDetails: item.pdfDetails,
               chapter: item.chapter,
-              // date: readableDate,
+              progress: 0,
             };
           });
-          getProgress();
-          setRows(mappedData);
-          console.log("Values of courses chapter are::",mappedData[2].chapter)
+          await getProgressFromRequest(mappedData);
           console.log("Retrieved courses are::", mappedData);
         } else {
           localStorage.setItem("accessToken", "");
@@ -243,7 +232,38 @@ function ShowEnrolled() {
       .catch((error) => {
         console.error(error);
       })
-      .finally(() => setDataLoaded(false));
+      .finally(() => {
+        setDataLoaded(false);
+      });
+  }
+
+  async function getProgressFromRequest(mappedData: any) {
+    const accessToken1 = localStorage.getItem("accessToken");
+    await axios
+      .get("http://localhost:3005/courses/enrolled/chapter", {
+        headers: {
+          "x-api-token": `${accessToken1}`,
+        },
+      })
+      .then((res) => {
+        mappedData.forEach((e1: any) => {
+          res.data.data.forEach((e2: any) => {
+            if (e1.id === e2.id) {
+              e1.progress = (e2.chapter / e1.chapter) * 100;
+            }
+          });
+        });
+        setRows(mappedData);
+      });
+  }
+
+  async function passProgressProp(id: any) {
+    for (let i = 0; i < arr1.length; i++) {
+      if (arr1[i].id === id) {
+        setProgressProp(arr1[i].chapter);
+        console.log("SET ID is:", progressProp);
+      }
+    }
   }
 
   useEffect(() => {
@@ -261,7 +281,9 @@ function ShowEnrolled() {
         />
         <EnrolledCourseDetailsModal
           isOpen={isOpen}
-          onOpen={() => setIsOpen(true)}
+          onOpen={() => {
+            setIsOpen(true);
+          }}
           onClose={() => {
             setIsOpen(false);
             getEnrolledUserCourses();
@@ -271,6 +293,8 @@ function ShowEnrolled() {
           description={propVal.description}
           pdfDetails={propVal.pdfDetails}
           chapter={propVal.chapter}
+          arr={arr1}
+          completedChapter={progressProp}
         />
       </Box>
     </>
