@@ -1,14 +1,7 @@
-import {
-  Box,
-  Text,
-  Flex,
-  Icon,
-  Button,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Box, Text, Flex, Button, useColorModeValue } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import ComplexTable from "views/admin/dataTables/components/ComplexTable";
 import axios from "axios";
 import Loader from "components/loader/Loader";
@@ -27,15 +20,12 @@ type RowObj = {
 const columnHelper = createColumnHelper<RowObj>();
 
 function EnrolledCourses() {
-  // const rerender = React.useReducer(() => ({}), {})[1]
-
   const textColor = useColorModeValue("secondaryGray.900", "white");
 
   const [propVal, setPropVal] = useState({
     id: "",
     title: "",
-    chapter: ""
-    // description: "",
+    chapter: "",
   });
 
   const history = useHistory();
@@ -109,7 +99,6 @@ function EnrolledCourses() {
       ),
     }),
 
-
     columnHelper.accessor("date", {
       id: "date",
       header: () => (
@@ -161,18 +150,11 @@ function EnrolledCourses() {
                   setPropVal({
                     id: info.row.original.id,
                     title: info.row.original.title,
-                    chapter: info.row.original.chapter
+                    chapter: info.row.original.chapter,
                     // description: info.row.original.description,
                   });
                 }}
               >
-                {/* <Icon
-                    transition="0.2s linear"
-                    w="20px"
-                    h="20px"
-                    as={MdEdit}
-                    color="brand.500"
-                  /> */}
                 Enroll
               </Button>
             </>
@@ -214,23 +196,6 @@ function EnrolledCourses() {
           localStorage.setItem("accessToken", "");
           history.push("/login");
         }
-
-        // const value = res.data.data;
-        // const mappedData = value.map((item: any) => {
-        //   const date = new Date(item.createdAt);
-        //   const readableDate = `${date.getDate()}/${
-        //     date.getMonth() + 1
-        //   }/${date.getFullYear()}`;
-
-        //   return {
-        //     title: item.title,
-        //     id: item.id,
-        //     description: item.description,
-        //     date: readableDate,
-        //   };
-        // });
-        // setRows(mappedData);
-        // console.log("Retrieved courses are::", mappedData);
       })
       .catch((error) => {
         console.error(error);

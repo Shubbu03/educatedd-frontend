@@ -8,11 +8,6 @@ import {
 } from "@chakra-ui/react";
 import {
   createColumnHelper,
-  // PaginationState,
-  // getFilteredRowModel,
-  // getPaginationRowModel,
-  // ColumnDef,
-  // OnChangeFn,
 } from "@tanstack/react-table";
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
@@ -36,7 +31,6 @@ type RowObj = {
 const columnHelper = createColumnHelper<RowObj>();
 
 function Enrolled() {
-  // const rerender = React.useReducer(() => ({}), {})[1]
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
 
@@ -169,18 +163,12 @@ function Enrolled() {
                 h="36px"
                 onClick={() => {
                   setIsOpen(true);
-                  // setID(info.row.original.id);
-                  // setEditValues({
-                  //   title: info.row.original.title,
-                  //   description: info.row.original.description,
-                  // });
                   setPropVal({
                     id: info.row.original.id,
                     title: info.row.original.title,
                     description: info.row.original.description,
                     chapter: info.row.original.chapter
                   });
-                  // console.log("info from edit is::",info)
                 }}
               >
                 <Icon
@@ -290,23 +278,6 @@ function Enrolled() {
           localStorage.setItem("accessToken", "");
           history.push("/login");
         }
-
-        // const value = res.data.data;
-        // const mappedData = value.map((item: any) => {
-        //   const date = new Date(item.createdAt);
-        //   const readableDate = `${date.getDate()}/${
-        //     date.getMonth() + 1
-        //   }/${date.getFullYear()}`;
-
-        //   return {
-        //     title: item.title,
-        //     id: item.id,
-        //     description: item.description,
-        //     date: readableDate,
-        //   };
-        // });
-        // setRows(mappedData);
-        // console.log("Retrieved courses are::", mappedData);
       })
       .catch((error) => {
         console.error(error);
@@ -367,7 +338,6 @@ function Enrolled() {
           onConfirm={onConfirm}
         />
       </Box>
-      {/* {console.log("props data is::", propVal)} */}
       <ToastContainer
         position="top-right"
         autoClose={5000}

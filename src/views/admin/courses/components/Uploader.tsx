@@ -1,10 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import axios from "axios";
 
-// type Props = {
-//     handleSubmit : () => void
-// }
-//{handleSubmit}:Props
 function Uploader() {
   const [fileList, setFileList] = useState<FileList | null>(null);
 
@@ -30,9 +26,6 @@ function Uploader() {
     const data = new FormData();
 
     data.append(`file`, files[0], files[0].name);
-    // files.forEach((file, i) => {
-
-    // });
 
     //call /courses/upload from here!!!!
 
@@ -45,13 +38,10 @@ function Uploader() {
         headers: {
           "Content-Type": "multipart/form-data",
           "x-api-token": `${accessToken}`,
-          // originalname: fileName,
         },
       })
       .then((res) => {
-        // console.log("the uploaded file is:", res.data.data);
-        localStorage.setItem("pdfDetails",res.data.data);
-        // setDataLoaded(true);
+        localStorage.setItem("pdfDetails", res.data.data);
       })
       .catch((error) => {
         console.error(error);
@@ -67,11 +57,7 @@ function Uploader() {
       <ul>
         {files.map((file, i) => (
           <>
-            <li key={i}>
-              {/* {file.name} - {file.type} */}
-              {file.name}
-            </li>
-            {/* {console.log("file name is::",file.name)} */}
+            <li key={i}>{file.name}</li>
           </>
         ))}
       </ul>

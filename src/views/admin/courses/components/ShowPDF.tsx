@@ -10,9 +10,6 @@ function ShowPDF() {
      console.log("page;;;",pageNo)
   };
 
-  // useEffect(() => {
-  //   forward()
-  // });
   return (
     <PDFViewer
       document={{

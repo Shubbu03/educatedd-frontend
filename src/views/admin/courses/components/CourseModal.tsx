@@ -8,11 +8,6 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   FormControl,
   FormLabel,
   Input,
@@ -23,17 +18,10 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "components/loader/Loader";
 
-// type EditVal = {
-//   id: string;
-//   title: string;
-//   description: string;
-// };
-
 type Props = {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
-  // editValues: EditVal
   id: string;
   title: string;
   description: string;
@@ -44,7 +32,6 @@ function CourseModal({
   isOpen,
   onOpen,
   onClose,
-  // editValues
   id,
   title,
   description,
@@ -225,30 +212,19 @@ function CourseModal({
               <Input
                 value={courseValues.chapter}
                 onChange={(e) =>
-                  setCourseValues({ ...courseValues, chapter: String(e.target.value) })
+                  setCourseValues({
+                    ...courseValues,
+                    chapter: String(e.target.value),
+                  })
                 }
                 placeholder="Enter Number of Chapter"
               />
-
-              {/* <NumberInput defaultValue={0} step={1}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput> */}
             </FormControl>
-
-            {/* <FormControl mt={4}>
-              <FormLabel>Keywords</FormLabel>
-              <Keywords />
-            </FormControl> */}
           </ModalBody>
 
           <ModalFooter>
             <Button
               onClick={courseValues.id.length ? editCourses : addNewCourse}
-              // onClick={editCourses}
               colorScheme="blue"
               mr={3}
             >

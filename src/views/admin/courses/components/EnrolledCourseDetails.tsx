@@ -89,17 +89,6 @@ function EnrolledCourseDetailsModal({
       });
   }
 
-  // async function setAlreadyExistingProgress() : Promise<StringOrNumber>{
-  //   for (let i = 0; i < arr.length; i++) {
-  //     if (arr[i].id === id) {
-  //       setCourseValues({ ...courseValues, completedChapter: arr[i].chapter });
-  //       return arr[i].chapter;
-  //     }
-  //   }
-  // }
-
-  // const newValue  = setAlreadyExistingProgress()
-
   useEffect(() => {
     setCourseValues({
       id: id,
@@ -122,7 +111,6 @@ function EnrolledCourseDetailsModal({
       >
         <ModalOverlay />
         <ModalContent>
-          {/* <Progress value={progress} /> */}
           <ModalHeader>{title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>{description}</ModalBody>

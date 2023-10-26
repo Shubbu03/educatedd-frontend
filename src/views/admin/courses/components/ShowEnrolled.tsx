@@ -183,7 +183,6 @@ function ShowEnrolled() {
                   console.log("enter view");
                   passProgressProp(info.row.original.id);
                   setIsOpen(true);
-                  // console.log("info of SELECTED from edit is::", propVal);
                 }}
               >
                 View
