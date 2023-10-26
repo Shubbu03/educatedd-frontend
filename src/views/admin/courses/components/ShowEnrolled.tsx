@@ -245,10 +245,17 @@ function ShowEnrolled() {
         },
       })
       .then((res) => {
+        let val = 0;
         mappedData.forEach((e1: any) => {
           res.data.data.forEach((e2: any) => {
             if (e1.id === e2.id) {
-              e1.progress = (e2.chapter / e1.chapter) * 100;
+              val = (e2.chapter / e1.chapter);
+              if(val > 0){
+                e1.progress = val * 100;
+              }
+              else{
+                e1.progress = 0;
+              }
             }
           });
         });

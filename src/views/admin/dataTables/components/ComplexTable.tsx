@@ -144,7 +144,7 @@ export default function ComplexTable(props: {
         {/* <div style={{ display: "flex", justifyContent: "center" }}/> */}
         <div
           className="flex items-center gap-2 "
-          style={{ margin: "0px 500px" }}
+          style={{ margin: "0px 510px" }}
         >
           <button
             className="border rounded p-1"
