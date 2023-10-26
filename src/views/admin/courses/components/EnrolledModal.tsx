@@ -75,8 +75,6 @@ function CourseModal({ isOpen, onOpen, onClose, id, title }: Props) {
   };
 
   useEffect(() => {
-    console.log("COURSE ID IS::", id);
-
     setCourseValues({ id: id, name: title });
   }, [id, title]);
 

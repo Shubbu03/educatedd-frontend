@@ -221,7 +221,6 @@ function ShowEnrolled() {
             };
           });
           await getProgressFromRequest(mappedData);
-          console.log("Retrieved courses are::", mappedData);
         } else {
           localStorage.setItem("accessToken", "");
           history.push("/login");
