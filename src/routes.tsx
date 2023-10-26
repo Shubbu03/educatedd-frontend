@@ -6,14 +6,11 @@ import {
   MdBook,
   MdOutlineShoppingCart,
 } from "react-icons/md";
-
-// Admin Imports
 import MainDashboard from "views/admin/default";
 import Files from "views/admin/myFiles";
 import Courses from "views/admin/courses/components";
 import Profile from "views/admin/profile";
 import ShowEnrolled from "views/admin/courses/components/ShowEnrolled";
-import EnrolledCourseDetails from "views/admin/courses/components/EnrolledCourseDetails";
 
 const isStudent = () => {
   const role = localStorage.getItem("role");
@@ -26,14 +23,14 @@ const isStudent = () => {
 };
 
 const routes = [
-  {
-    name: "Main Dashboard",
-    layout: "/admin",
-    path: "/default",
-    icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
-    component: MainDashboard,
-    isVisible: !isStudent(),
-  },
+  // {
+  //   name: "Main Dashboard",
+  //   layout: "/admin",
+  //   path: "/default",
+  //   icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
+  //   component: MainDashboard,
+  //   isVisible: !isStudent(),
+  // },
   {
     name: "My Documents",
     layout: "/admin",
@@ -73,21 +70,6 @@ const routes = [
     component: ShowEnrolled,
     isVisible: true,
   },
-  // {
-  //   name: "Enrolled Courses Details",
-  //   layout: "/admin",
-  //   icon: (
-  //     <Icon
-  //       as={MdOutlineShoppingCart}
-  //       width="20px"
-  //       height="20px"
-  //       color="inherit"
-  //     />
-  //   ),
-  //   path: "/details",
-  //   component: EnrolledCourseDetails,
-  //   isVisible: true,
-  // },
   {
     name: "Profile",
     layout: "/admin",
@@ -98,28 +80,6 @@ const routes = [
   },
 ];
 
-// export const routesUser = [
-//   {
-//     name: "Courses",
-//     layout: "/user",
-//     icon: (
-//       <Icon
-//         as={MdOutlineShoppingCart}
-//         width="20px"
-//         height="20px"
-//         color="inherit"
-//       />
-//     ),
-//     path: "/course",
-//     component: Courses,
-//   },
-//   {
-//     name: "Profile",
-//     layout: "/user",
-//     path: "/profile",
-//     icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
-//     component: Profile,
-//   },
-// ];
+
 
 export default routes;

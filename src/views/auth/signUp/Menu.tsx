@@ -27,16 +27,16 @@ const DropMenu = () => {
             <MenuList>
               <MenuItem
                 onClick={() => {
-                  setRole("Author");
-                  saveRole("Author");
+                  setRole("AUTHOR");
+                  saveRole("AUTHOR");
                 }}
               >
                 Author
               </MenuItem>
               <MenuItem
                 onClick={() => {
-                  setRole("Student");
-                  saveRole("Student");
+                  setRole("STUDENT");
+                  saveRole("STUDENT");
                 }}
               >
                 Student

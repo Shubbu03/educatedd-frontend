@@ -32,6 +32,8 @@ function EnrolledCourses() {
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const [isEnrolled, setIsEnrolled] = useState(false);
+
   const [rows, setRows] = useState([]);
 
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -156,6 +158,7 @@ function EnrolledCourses() {
                 }}
               >
                 Enroll
+                {/* {isEnrolled ? "Enrolled" : "Enroll"} */}
               </Button>
             </>
           }
@@ -173,7 +176,7 @@ function EnrolledCourses() {
           "x-api-token": `${accessToken}`,
         },
       })
-      .then((res) => {
+      .then(async (res) => {
         if (res.data.code === 200) {
           const value = res.data.data;
           const mappedData = value.map((item: any) => {
@@ -202,6 +205,7 @@ function EnrolledCourses() {
       })
       .finally(() => setDataLoaded(false));
   }
+
   useEffect(() => {
     getUserCourses();
   }, []);
@@ -217,6 +221,7 @@ function EnrolledCourses() {
           onClose={() => {
             setIsOpen(false);
             getUserCourses();
+            setIsEnrolled(true);
           }}
           id={propVal.id}
           title={propVal.title}

@@ -40,16 +40,18 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 
   const logOut = () => {
     localStorage.setItem("accessToken", "");
+    localStorage.setItem("pdfDetails", "");
     localStorage.setItem("role", "");
     history.push("/login");
   };
+  const role = localStorage.getItem("role");
 
   const [checkRole, setCheckRole] = useState(false);
 
   useEffect(() => {
-    const role = localStorage.getItem("role");
+    // const role = localStorage.getItem("role");
 
-    if (role === "Student") {
+    if (role === "STUDENT") {
       setCheckRole(true);
     } else {
       setCheckRole(false);
@@ -85,7 +87,6 @@ export default function HeaderLinks(props: { secondary: boolean }) {
         ) : (
           <SidebarResponsive routes={routes} />
         )}
-        {/* {console.log("checkRole value is::",checkRole)} */}
       </>
       <Menu>
         <MenuButton p="0px">
@@ -158,7 +159,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
               fontWeight="700"
               color={textColor}
             >
-              👋&nbsp; Hey, Adela
+              👋&nbsp; Hey, {role}
             </Text>
           </Flex>
           <Flex flexDirection="column" p="10px">

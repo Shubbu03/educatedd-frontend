@@ -212,6 +212,7 @@ function ShowEnrolled() {
             };
           });
           await getProgressFromRequest(mappedData);
+          // await checkEnrolled(mappedData);
         } else {
           localStorage.setItem("accessToken", "");
           history.push("/login");
@@ -238,11 +239,10 @@ function ShowEnrolled() {
         mappedData.forEach((e1: any) => {
           res.data.data.forEach((e2: any) => {
             if (e1.id === e2.id) {
-              val = (e2.chapter / e1.chapter);
-              if(val > 0){
+              val = e2.chapter / e1.chapter;
+              if (val > 0) {
                 e1.progress = val * 100;
-              }
-              else{
+              } else {
                 e1.progress = 0;
               }
             }
@@ -250,6 +250,17 @@ function ShowEnrolled() {
         });
         setRows(mappedData);
       });
+  }
+
+  async function checkEnrolled(mappedData: any) {
+    if (rows.includes(mappedData)) {
+      console.log("Filtered rows if:",rows)
+     return setRows(rows.filter((course) => course.id !== mappedData.id));
+    } else {
+      console.log("Filtered rows else:",rows)
+    //  return setRows([...rows, mappedData]);
+    return setRows([...rows,mappedData])
+    }
   }
 
   async function passProgressProp(id: any) {
