@@ -288,7 +288,6 @@ function ShowEnrolled() {
           description={propVal.description}
           pdfDetails={propVal.pdfDetails}
           chapter={propVal.chapter}
-          arr={arr1}
           completedChapter={progressProp}
         />
       </Box>

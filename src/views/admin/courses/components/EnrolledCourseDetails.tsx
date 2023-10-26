@@ -29,7 +29,6 @@ type Props = {
   chapter: string;
   completedChapter: string;
   pdfDetails: string;
-  arr: any[];
 };
 
 function EnrolledCourseDetailsModal({
@@ -42,7 +41,6 @@ function EnrolledCourseDetailsModal({
   pdfDetails,
   chapter,
   completedChapter,
-  arr,
 }: Props) {
   const [courseValues, setCourseValues] = useState({
     id: "00000000-0000-0000-0000-000000000000",
@@ -51,7 +49,6 @@ function EnrolledCourseDetailsModal({
     pdfDetails: "",
     chapter: "",
     completedChapter: "",
-    arr: [],
   });
 
   const [progress, setProgress] = useState(0);
@@ -97,9 +94,8 @@ function EnrolledCourseDetailsModal({
       pdfDetails: pdfDetails,
       chapter: chapter,
       completedChapter: completedChapter,
-      arr: arr,
     });
-  }, [id, title, description, pdfDetails, chapter, completedChapter, arr]);
+  }, [id, title, description, pdfDetails, chapter, completedChapter]);
   return (
     <>
       {dataLoaded && <Loader />}
@@ -150,7 +146,6 @@ function EnrolledCourseDetailsModal({
                   pdfDetails: "",
                   chapter: "",
                   completedChapter: "",
-                  arr: [],
                 });
               }}
               colorScheme="red"
