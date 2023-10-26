@@ -24,13 +24,6 @@ type RowObj = {
   button: string;
 };
 
-type Data = {
-  title: string;
-  description: string;
-  chapter: string;
-  progress: number;
-};
-
 const columnHelper = createColumnHelper<RowObj>();
 
 function ShowEnrolled() {
@@ -55,7 +48,6 @@ function ShowEnrolled() {
   const [isOpen, setIsOpen] = useState(false);
 
   let arr1: any[] = [];
-  let arr2: any[] = [];
 
   const columns = [
     columnHelper.accessor("title", {
@@ -209,7 +201,6 @@ function ShowEnrolled() {
         if (res.data.code === 200) {
           const value = res.data.data;
           const mappedData = value.map((item: any) => {
-            arr2.push(item);
             passProgressProp(item.id);
             return {
               title: item.title,
