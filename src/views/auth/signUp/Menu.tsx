@@ -4,10 +4,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  // MenuItemOption,
-  // MenuGroup,
-  // MenuOptionGroup,
-  // MenuDivider,
   Button,
 } from "@chakra-ui/react";
 
@@ -15,7 +11,6 @@ const DropMenu = () => {
   const [role, setRole] = useState("");
 
   const saveRole = (role: string) => {
-    // localStorage.removeItem("role");
     localStorage.setItem("role", role);
 
   };
