@@ -1,11 +1,7 @@
 // Chakra imports
 import { Box, Grid } from "@chakra-ui/react";
 import axios from "axios";
-
-// Custom components
 import Banner from "views/admin/profile/components/Banner";
-
-// Assets
 import banner from "assets/img/auth/banner.png";
 import avatar from "assets/img/avatars/avatar4.png";
 import avatarAdmin from "assets/img/avatars/avatar04.png";
@@ -54,34 +50,20 @@ export default function Overview() {
   }
 
   useEffect(() => {
-    getProfile()
-
+    getProfile();
   });
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <>
-        <Grid
-          templateColumns={{
-            base: "100fr",
-            lg: "1.34fr 1fr 1.62fr",
-          }}
-          templateRows={{
-            base: "repeat(3, 1fr)",
-            lg: "1fr",
-          }}
-          gap={{ base: "20px", xl: "2px" }}
-        >
-          <Banner
-            gridArea="1 / 1 / 2 / 2"
-            banner={banner}
-            avatar={userData.role === "STUDENT" ? avatar : avatarAdmin}
-            // avatar={avatar}
-            name={userData.firstName}
-            lastName={userData.lastName}
-            role={userData.role}
-            email={userData.email}
-          />
-        </Grid>
+        <Banner
+          gridArea="1 / 1 / 2 / 2"
+          banner={banner}
+          avatar={userData.role === "STUDENT" ? avatar : avatarAdmin}
+          name={userData.firstName}
+          lastName={userData.lastName}
+          role={userData.role}
+          email={userData.email}
+        />
       </>
     </Box>
   );

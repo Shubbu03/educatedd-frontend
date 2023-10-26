@@ -1,7 +1,6 @@
 // Chakra imports
 import { Avatar, Box, Button, Flex, Icon, Text, useColorModeValue } from "@chakra-ui/react";
 import Card from "components/card/Card";
-import { info } from "console";
 import { MdEdit } from "react-icons/md";
 
 export default function Banner(props: {
@@ -72,9 +71,6 @@ export default function Banner(props: {
         </Flex>
 
 		<Flex mx="auto" me="35px" alignItems="center" flexDirection="column">
-          {/* <Text color={textColorPrimary} fontSize="2xl" fontWeight="700">
-            {email}
-          </Text> */}
 		  <Button
                 position="relative"
                 bg="white"
