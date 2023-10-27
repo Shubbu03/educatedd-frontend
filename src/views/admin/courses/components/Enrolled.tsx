@@ -279,7 +279,7 @@ function Enrolled() {
               date: readableDate,
             };
           });
-          await checkOwner(mappedData[0].ownerId);
+          await checkOwner(mappedData[0].ownerID);
           setRows(mappedData);
           console.log("Retrieved courses are::", mappedData);
         } else {
@@ -305,8 +305,8 @@ function Enrolled() {
       .then((res) => {
         const valueMine = res.data.data;
         // mappedData.forEach((e1: any) => {
-        //   // console.log("CURRENT E1 ID:",e1.ownerID);
-        //   // console.log("CURRENT VALUE ID:",valueMine.id);
+          console.log("CURRENT E1 ID:",id);
+          console.log("CURRENT VALUE ID:",valueMine.id);
         //   if (e1.ownerID === valueMine.id) {
         //     setIsOwner(true);
         //   } else {
