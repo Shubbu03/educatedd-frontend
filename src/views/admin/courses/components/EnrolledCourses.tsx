@@ -149,6 +149,8 @@ function EnrolledCourses() {
                 h="36px"
                 onClick={() => {
                   setIsOpen(true);
+                  setIsEnrolled(true);
+                  // removeAlreadyEnrolled(info.row.original.id);
                   setPropVal({
                     id: info.row.original.id,
                     title: info.row.original.title,
@@ -193,7 +195,7 @@ function EnrolledCourses() {
               date: readableDate,
             };
           });
-          setRows(mappedData);
+          await removeAlreadyEnrolled(mappedData);
           console.log("Retrieved courses are::", mappedData);
         } else {
           localStorage.setItem("accessToken", "");
@@ -204,6 +206,22 @@ function EnrolledCourses() {
         console.error(error);
       })
       .finally(() => setDataLoaded(false));
+  }
+
+  async function removeAlreadyEnrolled(mappedData: any) {
+    const accessToken1 = localStorage.getItem("accessToken");
+    await axios
+      .get("http://localhost:3005/courses/enrolled/chapter", {
+        headers: {
+          "x-api-token": `${accessToken1}`,
+        },
+      })
+      .then((res) => {
+        res.data.data.forEach((e1: any) => {
+          mappedData = mappedData.filter((item: any) => item.id !== e1.id);
+        });
+        setRows(mappedData);
+      });
   }
 
   useEffect(() => {

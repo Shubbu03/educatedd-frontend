@@ -7,11 +7,13 @@ import avatar from "assets/img/avatars/avatar4.png";
 import avatarAdmin from "assets/img/avatars/avatar04.png";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import Loader from "components/loader/Loader";
 
 export default function Overview() {
   const [dataLoaded, setDataLoaded] = useState(false);
 
   const [userData, setUserData] = useState({
+    id:"",
     firstName: "",
     lastName: "",
     role: "",
@@ -33,6 +35,7 @@ export default function Overview() {
         if (res.data.code === 200) {
           const value = res.data.data;
           setUserData({
+            id:value.id,
             firstName: value.firstName,
             lastName: value.lastName,
             role: value.role,
@@ -59,6 +62,7 @@ export default function Overview() {
           gridArea="1 / 1 / 2 / 2"
           banner={banner}
           avatar={userData.role === "STUDENT" ? avatar : avatarAdmin}
+          id={userData.id}
           name={userData.firstName}
           lastName={userData.lastName}
           role={userData.role}
