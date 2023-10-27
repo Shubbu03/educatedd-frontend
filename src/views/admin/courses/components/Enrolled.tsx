@@ -186,29 +186,31 @@ function Enrolled() {
               </Button>
 
               {info.row.original.ownerID === OwnerID ? (
-                <Button
-                  position="relative"
-                  bg="white"
-                  _hover={{ bg: "whiteAlpha.900" }}
-                  _active={{ bg: "white" }}
-                  _focus={{ bg: "white" }}
-                  p="0px !important"
-                  minW="36px"
-                  h="36px"
-                  onClick={() => {
-                    setIsDeleteOpen(true);
+                <>
+                  <Button
+                    position="relative"
+                    bg="white"
+                    _hover={{ bg: "whiteAlpha.900" }}
+                    _active={{ bg: "white" }}
+                    _focus={{ bg: "white" }}
+                    p="0px !important"
+                    minW="36px"
+                    h="36px"
+                    onClick={() => {
+                      setIsDeleteOpen(true);
 
-                    setID(info.row.original.id);
-                  }}
-                >
-                  <Icon
-                    transition="0.2s linear"
-                    w="20px"
-                    h="20px"
-                    as={MdDelete}
-                    color="brand.500"
-                  />
-                </Button>
+                      setID(info.row.original.id);
+                    }}
+                  >
+                    <Icon
+                      transition="0.2s linear"
+                      w="20px"
+                      h="20px"
+                      as={MdDelete}
+                      color="brand.500"
+                    />
+                  </Button>
+                </>
               ) : null}
             </>
           }
