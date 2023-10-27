@@ -45,6 +45,8 @@ function Enrolled() {
 
   const [isOwner, setIsOwner] = useState(false);
 
+  const [OwnerID, setOwnerID] = useState("")
+
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const [rows, setRows] = useState([]);
@@ -183,7 +185,7 @@ function Enrolled() {
                 />
               </Button>
 
-              {isOwner && (
+              {info.row.original.ownerID === OwnerID ? (
                 <Button
                   position="relative"
                   bg="white"
@@ -207,7 +209,7 @@ function Enrolled() {
                     color="brand.500"
                   />
                 </Button>
-              )}
+              ) : null}
             </>
           }
 
@@ -304,9 +306,13 @@ function Enrolled() {
       })
       .then((res) => {
         const valueMine = res.data.data;
+
+        setOwnerID(valueMine.id);
+
+        console.log("set scene",valueMine.id)
         // mappedData.forEach((e1: any) => {
-          console.log("CURRENT E1 ID:",id);
-          console.log("CURRENT VALUE ID:",valueMine.id);
+          // console.log("CURRENT E1 ID:",id);
+          // console.log("CURRENT VALUE ID:",valueMine.id);
         //   if (e1.ownerID === valueMine.id) {
         //     setIsOwner(true);
         //   } else {
@@ -314,11 +320,11 @@ function Enrolled() {
         //   }
         // });
 
-        if (valueMine.id === id) {
-          setIsOwner(true);
-        } else {
-          setIsOwner(false);
-        }
+        // if (valueMine.id === id) {
+        //   setIsOwner(true);
+        // } else {
+        //   setIsOwner(false);
+        // }
       });
   }
 
