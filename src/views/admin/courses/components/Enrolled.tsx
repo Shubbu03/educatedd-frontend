@@ -45,7 +45,7 @@ function Enrolled() {
 
   const [isOwner, setIsOwner] = useState(false);
 
-  const [OwnerID, setOwnerID] = useState("")
+  const [OwnerID, setOwnerID] = useState("");
 
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
@@ -308,23 +308,6 @@ function Enrolled() {
         const valueMine = res.data.data;
 
         setOwnerID(valueMine.id);
-
-        console.log("set scene",valueMine.id)
-        // mappedData.forEach((e1: any) => {
-          // console.log("CURRENT E1 ID:",id);
-          // console.log("CURRENT VALUE ID:",valueMine.id);
-        //   if (e1.ownerID === valueMine.id) {
-        //     setIsOwner(true);
-        //   } else {
-        //     setIsOwner(false);
-        //   }
-        // });
-
-        // if (valueMine.id === id) {
-        //   setIsOwner(true);
-        // } else {
-        //   setIsOwner(false);
-        // }
       });
   }
 
