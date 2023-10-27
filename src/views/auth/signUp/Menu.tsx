@@ -27,7 +27,7 @@ const DropMenu = () => {
             <MenuList>
               <MenuItem
                 onClick={() => {
-                  setRole("AUTHOR");
+                  setRole("Author");
                   saveRole("AUTHOR");
                 }}
               >
@@ -35,7 +35,7 @@ const DropMenu = () => {
               </MenuItem>
               <MenuItem
                 onClick={() => {
-                  setRole("STUDENT");
+                  setRole("Student");
                   saveRole("STUDENT");
                 }}
               >

@@ -6,9 +6,7 @@ import {
   Button,
   useColorModeValue,
 } from "@chakra-ui/react";
-import {
-  createColumnHelper,
-} from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { MdAdd, MdEdit, MdDelete } from "react-icons/md";
@@ -25,25 +23,27 @@ type RowObj = {
   chapter: string;
   date: string;
   id: string;
+  ownerID: string;
   buttons: string;
 };
 
 const columnHelper = createColumnHelper<RowObj>();
 
 function Enrolled() {
-
   const textColor = useColorModeValue("secondaryGray.900", "white");
 
   const [propVal, setPropVal] = useState({
     id: "",
     title: "",
     description: "",
-    chapter:""
+    chapter: "",
   });
 
   const history = useHistory();
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const [isOwner, setIsOwner] = useState(false);
 
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
@@ -52,6 +52,8 @@ function Enrolled() {
   const [dataLoaded, setDataLoaded] = useState(false);
 
   const [id, setID] = useState("");
+
+  let ownId = "";
 
   const columns = [
     columnHelper.accessor("title", {
@@ -163,11 +165,12 @@ function Enrolled() {
                 h="36px"
                 onClick={() => {
                   setIsOpen(true);
+                  // ownId = info.row.original.ownerID
                   setPropVal({
                     id: info.row.original.id,
                     title: info.row.original.title,
                     description: info.row.original.description,
-                    chapter: info.row.original.chapter
+                    chapter: info.row.original.chapter,
                   });
                 }}
               >
@@ -180,28 +183,31 @@ function Enrolled() {
                 />
               </Button>
 
-              <Button
-                position="relative"
-                bg="white"
-                _hover={{ bg: "whiteAlpha.900" }}
-                _active={{ bg: "white" }}
-                _focus={{ bg: "white" }}
-                p="0px !important"
-                minW="36px"
-                h="36px"
-                onClick={() => {
-                  setIsDeleteOpen(true);
-                  setID(info.row.original.id);
-                }}
-              >
-                <Icon
-                  transition="0.2s linear"
-                  w="20px"
-                  h="20px"
-                  as={MdDelete}
-                  color="brand.500"
-                />
-              </Button>
+              {isOwner && (
+                <Button
+                  position="relative"
+                  bg="white"
+                  _hover={{ bg: "whiteAlpha.900" }}
+                  _active={{ bg: "white" }}
+                  _focus={{ bg: "white" }}
+                  p="0px !important"
+                  minW="36px"
+                  h="36px"
+                  onClick={() => {
+                    setIsDeleteOpen(true);
+
+                    setID(info.row.original.id);
+                  }}
+                >
+                  <Icon
+                    transition="0.2s linear"
+                    w="20px"
+                    h="20px"
+                    as={MdDelete}
+                    color="brand.500"
+                  />
+                </Button>
+              )}
             </>
           }
 
@@ -255,7 +261,7 @@ function Enrolled() {
           "x-api-token": `${accessToken}`,
         },
       })
-      .then((res) => {
+      .then(async (res) => {
         if (res.data.code === 200) {
           const value = res.data.data;
           const mappedData = value.map((item: any) => {
@@ -266,12 +272,14 @@ function Enrolled() {
 
             return {
               title: item.title,
+              ownerID: item.ownerId,
               id: item.id,
               description: item.description,
               chapter: item.chapter,
               date: readableDate,
             };
           });
+          await checkOwner(mappedData[0].ownerId);
           setRows(mappedData);
           console.log("Retrieved courses are::", mappedData);
         } else {
@@ -283,6 +291,35 @@ function Enrolled() {
         console.error(error);
       })
       .finally(() => setDataLoaded(false));
+  }
+
+  async function checkOwner(id: any) {
+    const accessToken = localStorage.getItem("accessToken");
+    setDataLoaded(true);
+    await axios
+      .get("http://localhost:3005/users/me", {
+        headers: {
+          "x-api-token": `${accessToken}`,
+        },
+      })
+      .then((res) => {
+        const valueMine = res.data.data;
+        // mappedData.forEach((e1: any) => {
+        //   // console.log("CURRENT E1 ID:",e1.ownerID);
+        //   // console.log("CURRENT VALUE ID:",valueMine.id);
+        //   if (e1.ownerID === valueMine.id) {
+        //     setIsOwner(true);
+        //   } else {
+        //     setIsOwner(false);
+        //   }
+        // });
+
+        if (valueMine.id === id) {
+          setIsOwner(true);
+        } else {
+          setIsOwner(false);
+        }
+      });
   }
 
   const onConfirm = async () => {
