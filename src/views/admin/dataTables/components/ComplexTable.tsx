@@ -160,8 +160,8 @@ export default function ComplexTable(props: {
           >
             {">"}
           </button>
-          <span className="flex items-center gap-1">
-            <div>Page</div>
+          <span className=" items-center gap-1">
+            <div></div>
             <strong>
               {table.getState().pagination.pageIndex + 1} of{" "}
               {table.getPageCount()}

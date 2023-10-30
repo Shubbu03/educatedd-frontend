@@ -154,35 +154,6 @@ function Enrolled() {
         <Flex align="center">
           {
             <>
-              <Button
-                position="relative"
-                bg="white"
-                _hover={{ bg: "whiteAlpha.900" }}
-                _active={{ bg: "white" }}
-                _focus={{ bg: "white" }}
-                p="0px !important"
-                minW="36px"
-                h="36px"
-                onClick={() => {
-                  setIsOpen(true);
-                  // ownId = info.row.original.ownerID
-                  setPropVal({
-                    id: info.row.original.id,
-                    title: info.row.original.title,
-                    description: info.row.original.description,
-                    chapter: info.row.original.chapter,
-                  });
-                }}
-              >
-                <Icon
-                  transition="0.2s linear"
-                  w="20px"
-                  h="20px"
-                  as={MdEdit}
-                  color="brand.500"
-                />
-              </Button>
-
               {info.row.original.ownerID === OwnerID ? (
                 <>
                   <Button
@@ -195,20 +166,51 @@ function Enrolled() {
                     minW="36px"
                     h="36px"
                     onClick={() => {
-                      setIsDeleteOpen(true);
-
-                      setID(info.row.original.id);
+                      setIsOpen(true);
+                      // ownId = info.row.original.ownerID
+                      setPropVal({
+                        id: info.row.original.id,
+                        title: info.row.original.title,
+                        description: info.row.original.description,
+                        chapter: info.row.original.chapter,
+                      });
                     }}
                   >
                     <Icon
                       transition="0.2s linear"
                       w="20px"
                       h="20px"
-                      as={MdDelete}
+                      as={MdEdit}
                       color="brand.500"
                     />
                   </Button>
                 </>
+              ) : null}
+
+              {info.row.original.ownerID === OwnerID ? (
+                <Button
+                  position="relative"
+                  bg="white"
+                  _hover={{ bg: "whiteAlpha.900" }}
+                  _active={{ bg: "white" }}
+                  _focus={{ bg: "white" }}
+                  p="0px !important"
+                  minW="36px"
+                  h="36px"
+                  onClick={() => {
+                    setIsDeleteOpen(true);
+
+                    setID(info.row.original.id);
+                  }}
+                >
+                  <Icon
+                    transition="0.2s linear"
+                    w="20px"
+                    h="20px"
+                    as={MdDelete}
+                    color="brand.500"
+                  />
+                </Button>
               ) : null}
             </>
           }
@@ -264,7 +266,7 @@ function Enrolled() {
         },
       })
       .then(async (res) => {
-        if (res.data.code === 200) {
+        if (res.data.code === 200 || res.data.code === 204) {
           const value = res.data.data;
           const mappedData = value.map((item: any) => {
             const date = new Date(item.createdAt);

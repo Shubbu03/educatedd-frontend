@@ -212,7 +212,6 @@ function ShowEnrolled() {
             };
           });
           await getProgressFromRequest(mappedData);
-          // await checkEnrolled(mappedData);
         } else {
           localStorage.setItem("accessToken", "");
           history.push("/login");
@@ -251,17 +250,6 @@ function ShowEnrolled() {
         setRows(mappedData);
       });
   }
-
-  // async function checkEnrolled(mappedData: any) {
-  //   if (rows.includes(mappedData)) {
-  //     console.log("Filtered rows if:", rows);
-  //     return setRows(rows.filter((course) => course.id !== mappedData.id));
-  //   } else {
-  //     console.log("Filtered rows else:", rows);
-  //     //  return setRows([...rows, mappedData]);
-  //     return setRows([...rows, mappedData]);
-  //   }
-  // }
 
   async function passProgressProp(id: any) {
     for (let i = 0; i < arr1.length; i++) {
