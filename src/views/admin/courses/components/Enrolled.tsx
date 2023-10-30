@@ -43,7 +43,7 @@ function Enrolled() {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const [isOwner, setIsOwner] = useState(false);
+  // const [isOwner, setIsOwner] = useState(false);
 
   const [OwnerID, setOwnerID] = useState("");
 
@@ -54,8 +54,6 @@ function Enrolled() {
   const [dataLoaded, setDataLoaded] = useState(false);
 
   const [id, setID] = useState("");
-
-  let ownId = "";
 
   const columns = [
     columnHelper.accessor("title", {
