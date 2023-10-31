@@ -285,7 +285,6 @@ function Enrolled() {
           });
           await checkOwner(mappedData[0].ownerID);
           setRows(mappedData);
-          console.log("Retrieved courses are::", mappedData);
         } else {
           localStorage.setItem("accessToken", "");
           history.push("/login");
